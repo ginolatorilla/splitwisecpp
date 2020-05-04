@@ -19,15 +19,11 @@ endmacro()
 add_cxx_flag(-fPIC)
 add_cxx_flag(-fdiagnostics-color=always)
 add_cxx_flag(-pipe)
+add_cxx_flag(-fno-rtti)
+add_cxx_flag(-fno-exceptions)
 
-# I prefer to use exceptions only during tests.
-if(${PROJECT_NAME}_ENABLE_TESTING)
-    add_cxx_flag(-fexceptions)
-    if(${PROJECT_NAME}_ENABLE_SANITIZERS)
-        add_cxx_flag(-fsanitize=address,undefined)
-    endif()
-else()
-    add_cxx_flag(-fno-exceptions)
+if(${PROJECT_NAME}_ENABLE_TESTING AND ${PROJECT_NAME}_ENABLE_SANITIZERS)
+    add_cxx_flag(-fsanitize=address,undefined)
 endif()
 
 # I prefer strict compliance to standards.

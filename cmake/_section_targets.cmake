@@ -5,7 +5,7 @@
 include(IncludeMeOnce)
 IncludeMeOnce()
 
-set(${PROJECT_NAME}_SOURCES src/splitwisecpp.cpp)
+set(${PROJECT_NAME}_SOURCES src/splitwisecpp.cpp src/curlwrapper.cpp)
 
 if(${PROJECT_NAME}_BUILD_SHARED)
     set(_library_target_type SHARED)
@@ -19,4 +19,8 @@ add_library(${PROJECT_NAME} ${_library_target_type} ${${PROJECT_NAME}_SOURCES})
 target_include_directories(${PROJECT_NAME}
     PUBLIC
         include
+    PRIVATE
+        src
+        ${libcurl_INCLUDE_DIRS}
+        ${jsoncpp_INCLUDE_DIRS}
 )
