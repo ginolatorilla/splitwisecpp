@@ -1,9 +1,7 @@
 // Copyright (c) 2020 Gino Latorilla.
 
 #include "splitwisecpp/splitwisecpp.h"
-#include <curlpp/cURLpp.hpp>
-#include <curlpp/Easy.hpp>
-#include <curlpp/Options.hpp>
+#include "curlwrapper.hpp"
 #include <oauth.h>
 #include <array>
 #include <algorithm>
@@ -23,8 +21,7 @@ enum class Methods : uint8_t
 
 struct Context
 {
-    curlpp::Cleanup curlpp_cleanup;
-    curlpp::Easy curlpp;
+    Curl curl;
 
     std::array<char*, 1> signed_urls;
 };
@@ -32,7 +29,6 @@ struct Context
 Splitwise::Splitwise(const Configuration& config)
 {
     _context = new Context();
-    AS_CONTEXT(_context)->curlpp.setOpt(curlpp::Options::FollowLocation(true));
     AS_CONTEXT(_context)->signed_urls[static_cast<uint8_t>(Methods::get_current_user)] = 
         ::oauth_sign_url2((BASEURL + "get_current_user").c_str(),
                           nullptr, // unused
@@ -57,11 +53,11 @@ Splitwise::~Splitwise()
 Json Splitwise::get_current_user()
 {
     std::stringstream response_sink;
-    AS_CONTEXT(_context)->curlpp.setOpt(curlpp::Options::WriteStream(&response_sink));
-    AS_CONTEXT(_context)->curlpp.setOpt(curlpp::Options::Url(
+    AS_CONTEXT(_context)->curl.set_write_to_stream(&response_sink);
+    AS_CONTEXT(_context)->curl.set_url(
         AS_CONTEXT(_context)->signed_urls[static_cast<uint8_t>(Methods::get_current_user)]
-    ));
-    AS_CONTEXT(_context)->curlpp.perform();
+    );
+    AS_CONTEXT(_context)->curl.perform();
 
     ::Json::CharReaderBuilder rb;
     ::Json::Value parsed;
