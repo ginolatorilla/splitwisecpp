@@ -6,4 +6,6 @@
 find_package(PkgConfig)
 
 # You can use this with CMake targets as `PkgConfig::python3`.
-# pkg_check_modules(python3 IMPORTED_TARGET "python3>=3.0")
+pkg_check_modules(curlpp IMPORTED_TARGET curlpp)
+pkg_check_modules(curl IMPORTED_TARGET libcurl)
+pkg_check_modules(jsoncpp IMPORTED_TARGET jsoncpp)
