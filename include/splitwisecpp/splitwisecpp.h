@@ -12,18 +12,18 @@ namespace splitwisecpp
 using UnspecifiedPtr = void*;
 using Json = ::Json::Value;
 
+struct Configuration
+{
+    std::string consumer_key;
+    std::string consumer_secret;
+    std::string oauth1_token;
+    std::string oauth1_token_secret;
+};
+
 class Splitwise
 {
 public:
-    struct Configuration
-    {
-        std::string consumer_key;
-        std::string consumer_secret;
-        std::string oauth1_token;
-        std::string oauth1_token_secret;
-    };
-
-    explicit Splitwise(const Splitwise::Configuration& config);
+    explicit Splitwise(const Configuration& config);
     ~Splitwise();
 
     Json get_current_user();
