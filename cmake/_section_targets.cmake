@@ -5,7 +5,7 @@
 include(IncludeMeOnce)
 IncludeMeOnce()
 
-set(${PROJECT_NAME}_SOURCES src/impl.cpp)
+set(${PROJECT_NAME}_SOURCES src/splitwisecpp.cpp)
 
 if(${PROJECT_NAME}_BUILD_SHARED)
     set(_library_target_type SHARED)
@@ -17,6 +17,6 @@ endif()
 # Expose your API directories with the INTERFACE property.
 add_library(${PROJECT_NAME} ${_library_target_type} ${${PROJECT_NAME}_SOURCES})
 target_include_directories(${PROJECT_NAME}
-    INTERFACE
+    PUBLIC
         include
 )
