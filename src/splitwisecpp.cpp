@@ -29,7 +29,7 @@ struct Context
     std::array<char*, 1> signed_urls;
 };
 
-Splitwise::Splitwise(const Splitwise::Configuration& config)
+Splitwise::Splitwise(const Configuration& config)
 {
     _context = new Context();
     AS_CONTEXT(_context)->curlpp.setOpt(curlpp::Options::FollowLocation(true));
