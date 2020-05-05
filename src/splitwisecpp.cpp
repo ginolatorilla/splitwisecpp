@@ -20,6 +20,23 @@ struct Context
 {
     Curl curl;
     std::array<char*, 1> signed_urls;
+
+    template<ApiMethods M>
+    Json api_request_as_json()
+    {
+        ::Json::Value parsed;
+        ::Json::CharReaderBuilder rb;
+        std::unique_ptr<::Json::CharReader> json_c_reader(rb.newCharReader());
+        detail::JsonReaderContext context;
+        context.json = &parsed;
+        context.reader = json_c_reader.get();
+
+        curl.set_write_to_json(&context);
+        curl.set_url(signed_urls[static_cast<uint8_t>(api_traits<M>::id)]);
+        curl.perform();
+
+        return parsed;
+    }
 };
 
 Splitwise::Splitwise(const Configuration& config)
@@ -46,24 +63,14 @@ Splitwise::~Splitwise()
     delete AS_CONTEXT(_context);
 }
 
+#define API_REQUEST_AS_JSON(__method__) (AS_CONTEXT(_context)->api_request_as_json<ApiMethods::__method__>())
 
 Json Splitwise::get_current_user()
 {
-    ::Json::Value parsed;
-    ::Json::CharReaderBuilder rb;
-    std::unique_ptr<::Json::CharReader> json_c_reader(rb.newCharReader());
-    detail::JsonReaderContext context;
-    context.json = &parsed;
-    context.reader = json_c_reader.get();
-
-    AS_CONTEXT(_context)->curl.set_write_to_json(&context);
-    AS_CONTEXT(_context)->curl.set_url(
-        AS_CONTEXT(_context)->signed_urls[static_cast<uint8_t>(api_traits<ApiMethods::get_current_user>::id)]
-    );
-    AS_CONTEXT(_context)->curl.perform();
-
-    return parsed;
+    return API_REQUEST_AS_JSON(get_current_user);
 }
+
+#undef API_REQUEST_AS_JSON
 
 
 }  // namespace splitwisecpp
