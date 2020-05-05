@@ -7,6 +7,7 @@
 #include <array>
 #include <algorithm>
 #include <json/json.h>
+#include <memory>
 
 #define AS_CONTEXT(__context__) (reinterpret_cast<splitwisecpp::Context*>(__context__))
 
@@ -48,17 +49,19 @@ Splitwise::~Splitwise()
 
 Json Splitwise::get_current_user()
 {
-    std::stringstream response_sink;
-    AS_CONTEXT(_context)->curl.set_write_to_stream(&response_sink);
+    ::Json::Value parsed;
+    ::Json::CharReaderBuilder rb;
+    std::unique_ptr<::Json::CharReader> json_c_reader(rb.newCharReader());
+    detail::JsonReaderContext context;
+    context.json = &parsed;
+    context.reader = json_c_reader.get();
+
+    AS_CONTEXT(_context)->curl.set_write_to_json(&context);
     AS_CONTEXT(_context)->curl.set_url(
         AS_CONTEXT(_context)->signed_urls[static_cast<uint8_t>(api_traits<ApiMethods::get_current_user>::id)]
     );
     AS_CONTEXT(_context)->curl.perform();
 
-    ::Json::CharReaderBuilder rb;
-    ::Json::Value parsed;
-    std::string _unused;
-    ::Json::parseFromStream(rb, response_sink, &parsed, &_unused);
     return parsed;
 }
 
