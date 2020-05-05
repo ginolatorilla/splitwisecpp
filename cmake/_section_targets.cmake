@@ -5,7 +5,7 @@
 include(IncludeMeOnce)
 IncludeMeOnce()
 
-set(${PROJECT_NAME}_SOURCES src/splitwisecpp.cpp src/curlwrapper.cpp)
+set(${PROJECT_NAME}_SOURCES src/splitwisecpp.cpp src/curlwrapper.cpp src/context.cpp)
 
 if(${PROJECT_NAME}_BUILD_SHARED)
     set(_library_target_type SHARED)
