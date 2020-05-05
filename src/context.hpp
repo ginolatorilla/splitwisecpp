@@ -1,3 +1,8 @@
+// Copyright (c) 2020 Gino Latorilla.
+
+#ifndef SPLITWISECPP_CONTEXT_H_
+#define SPLITWISECPP_CONTEXT_H_
+
 #include <memory>
 #include <type_traits>
 #include "splitwisecpp/splitwisecpp.h"
@@ -59,3 +64,5 @@ private:
 };
 
 }  // namespace spliwisecpp
+
+#endif  // SPLITWISECPP_CONTEXT_H_
