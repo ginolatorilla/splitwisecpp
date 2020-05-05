@@ -17,7 +17,6 @@ struct api_traits
 #define API_TRAITS_ENTRY(NAME) \
     template<> struct api_traits<ApiMethods::NAME> \
     { \
-        static constexpr std::uint32_t id = static_cast<std::uint32_t>(ApiMethods::NAME); \
         static constexpr const char* const c_str = #NAME; \
     }
 
