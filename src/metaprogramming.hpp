@@ -1,3 +1,8 @@
+// Copyright (c) 2020 Gino Latorilla.
+
+#ifndef SPLITWISECPP_METAPROGRAMMING_H_
+#define SPLITWISECPP_METAPROGRAMMING_H_
+
 #include <iosfwd>
 
 namespace splitwisecpp
@@ -35,3 +40,5 @@ inline std::string join_as_path_str(Params... args)
 }
 
 }  // namespace splitwisecpp
+
+#endif  // SPLITWISECPP_METAPROGRAMMING_H_
