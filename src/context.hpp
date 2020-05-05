@@ -11,8 +11,9 @@ namespace splitwisecpp
 
 extern const std::string BASEURL;
 
-struct Context
+class Context
 {
+public:
     Curl curl;
     const Configuration* config;
 
@@ -51,40 +52,21 @@ struct Context
     }
 
     template<ApiMethods M>
-    Json api_request_as_json()
+    Splitwise::ApiResponse api_request_as_json()
     {
-        ::Json::Value parsed;
-        ::Json::CharReaderBuilder rb;
-        std::unique_ptr<::Json::CharReader> json_c_reader(rb.newCharReader());
-        detail::JsonReaderContext context;
-        context.json = &parsed;
-        context.reader = json_c_reader.get();
-
-        curl.set_write_to_json(&context);
         auto signed_url = create_signed_api_url<M>();
-        curl.set_url(signed_url.get());
-        curl.perform();
-
-        return parsed;
+        return api_request_as_json(signed_url.get());
     }
 
     template<ApiMethods M, class P1>
-    Json api_request_as_json(P1 param1)
+    Splitwise::ApiResponse api_request_as_json(P1 param1)
     {
-        ::Json::Value parsed;
-        ::Json::CharReaderBuilder rb;
-        std::unique_ptr<::Json::CharReader> json_c_reader(rb.newCharReader());
-        detail::JsonReaderContext context;
-        context.json = &parsed;
-        context.reader = json_c_reader.get();
-
-        curl.set_write_to_json(&context);
         auto signed_url = create_signed_api_url<M>(param1);
-        curl.set_url(signed_url.get());
-        curl.perform();
-
-        return parsed;
+        return api_request_as_json(signed_url.get());
     }
+
+private:
+    Splitwise::ApiResponse api_request_as_json(char* signed_url);
 };
 
 }  // namespace spliwisecpp

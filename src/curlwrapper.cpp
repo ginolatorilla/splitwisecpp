@@ -46,14 +46,14 @@ void Curl::set_write_to_json(detail::JsonReaderContext* context)
     ::curl_easy_setopt(handle, CURLOPT_WRITEDATA, context);
 }
 
-void Curl::set_url(const char* url)
+::CURLcode Curl::set_url(const char* url)
 {
-    ::curl_easy_setopt(handle, CURLOPT_URL, url);
+    return ::curl_easy_setopt(handle, CURLOPT_URL, url);
 }
 
-void Curl::perform()
+::CURLcode Curl::perform()
 {
-    ::curl_easy_perform(handle);
+    return ::curl_easy_perform(handle);
 }
 
 }  // namespace splitwisecpp

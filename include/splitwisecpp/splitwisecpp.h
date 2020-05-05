@@ -21,15 +21,29 @@ struct Configuration
     std::string oauth1_token_secret;
 };
 
+enum class ErrorCodes
+{
+    NoError,
+    OAuth1_Sign_Url_Error,
+    OutOfMemory,
+    NetworkError
+};
+
 class Splitwise
 {
 public:
+    struct ApiResponse
+    {
+        Json json;
+        ErrorCodes error;
+    };
+
     explicit Splitwise(const Configuration& config);
     ~Splitwise();
 
-    Json get_current_user();
-    Json get_user(UserId id);
-    Json get_groups();
+    ApiResponse get_current_user();
+    ApiResponse get_user(UserId id);
+    ApiResponse get_groups();
 
 private:
     UnspecifiedPtr _context;
