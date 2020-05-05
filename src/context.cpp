@@ -1,3 +1,5 @@
+#include <cstddef>
+#include <oauth.h>
 #include "context.hpp"
 
 namespace splitwisecpp
@@ -10,6 +12,21 @@ Context::Context(const Configuration* config_) : config(config_)
 }
 
 Context::~Context() = default;
+
+Context::OAuthUrlType Context::create_signed_api_url(const char* method, const std::string& fused_args)
+{
+    return OAuthUrlType(::oauth_sign_url2(
+            (BASEURL + method + fused_args).c_str(),
+            nullptr, // unused
+            ::OA_HMAC,
+            nullptr, // HTTP GET
+            config->consumer_key.c_str(),
+            config->consumer_secret.c_str(),
+            config->oauth1_token.c_str(),
+            config->oauth1_token_secret.c_str()
+        ), &::free
+    );
+}
 
 Splitwise::ApiResponse Context::api_request_as_json(char* signed_url)
 {
