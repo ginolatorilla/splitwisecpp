@@ -22,4 +22,6 @@ struct api_traits
 
 API_TRAITS_ENTRY(get_current_user);
 
+#undef API_TRAITS_ENTRY
+
 }  // splitwisecpp
