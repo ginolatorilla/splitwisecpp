@@ -6,6 +6,7 @@ namespace splitwisecpp
 enum class ApiMethods : std::uint32_t
 {
     get_current_user,
+    get_user,
     _count // Trick for counting number of enumerators
 };
 
@@ -21,6 +22,7 @@ struct api_traits
     }
 
 API_TRAITS_ENTRY(get_current_user);
+API_TRAITS_ENTRY(get_user);
 
 #undef API_TRAITS_ENTRY
 
