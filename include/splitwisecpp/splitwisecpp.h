@@ -29,7 +29,7 @@ public:
 
     Json get_current_user();
     Json get_user(UserId id);
-
+    Json get_groups();
 
 private:
     UnspecifiedPtr _context;
