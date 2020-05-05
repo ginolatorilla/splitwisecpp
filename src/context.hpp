@@ -1,5 +1,4 @@
 #include <memory>
-#include <oauth.h>
 #include <type_traits>
 #include "splitwisecpp/splitwisecpp.h"
 #include "curlwrapper.hpp"
@@ -25,32 +24,6 @@ public:
         return reinterpret_cast<Context*>(opaque);
     }
 
-    template<class T>
-    using unique_cptr = std::unique_ptr<T, decltype(&::free)>;
-
-    template<ApiMethods Method, class... Param>
-    unique_cptr<char> create_signed_api_url(Param... args)
-    {
-        // TODO: Add C++14-equivalent (C++17 only)
-        static_assert(
-            std::conjunction<
-                std::disjunction<std::is_arithmetic<Param>, std::is_convertible<Param, std::string>>...
-            >::value, "All arguments must be valid for std::to_string."
-        );
-    
-        return unique_cptr<char>(::oauth_sign_url2(
-                (BASEURL + api_traits<Method>::c_str + join_as_path_str(args...)).c_str(),
-                nullptr, // unused
-                ::OA_HMAC,
-                nullptr, // HTTP GET
-                config->consumer_key.c_str(),
-                config->consumer_secret.c_str(),
-                config->oauth1_token.c_str(),
-                config->oauth1_token_secret.c_str()
-            ), &::free
-        );
-    }
-
     template<ApiMethods M>
     Splitwise::ApiResponse api_request_as_json()
     {
@@ -66,7 +39,23 @@ public:
     }
 
 private:
+    using OAuthUrlType = std::unique_ptr<char, decltype(&::free)>;
+
+    OAuthUrlType create_signed_api_url(const char* method, const std::string& fused_args);
     Splitwise::ApiResponse api_request_as_json(char* signed_url);
+
+    template<ApiMethods Method, class... Param>
+    OAuthUrlType create_signed_api_url(Param... args)
+    {
+        // TODO: Add C++14-equivalent (C++17 only)
+        static_assert(
+            std::conjunction<
+                std::disjunction<std::is_arithmetic<Param>, std::is_convertible<Param, std::string>>...
+            >::value, "All arguments must be valid for std::to_string."
+        );
+
+        return create_signed_api_url(api_traits<Method>::c_str, join_as_path_str(args...));
+    }
 };
 
 }  // namespace spliwisecpp
