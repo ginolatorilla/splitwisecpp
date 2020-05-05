@@ -30,7 +30,13 @@ Json Splitwise::get_user(UserId id)
     return API_REQUEST_AS_JSON_1(get_user, id);
 }
 
+Json Splitwise::get_groups()
+{
+    return API_REQUEST_AS_JSON(get_groups);
+}
+
 #undef API_REQUEST_AS_JSON
+#undef API_REQUEST_AS_JSON_1
 
 
 }  // namespace splitwisecpp

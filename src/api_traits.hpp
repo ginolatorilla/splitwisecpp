@@ -7,6 +7,7 @@ enum class ApiMethods : std::uint32_t
 {
     get_current_user,
     get_user,
+    get_groups,
     _count // Trick for counting number of enumerators
 };
 
@@ -22,6 +23,7 @@ struct api_traits
 
 API_TRAITS_ENTRY(get_current_user);
 API_TRAITS_ENTRY(get_user);
+API_TRAITS_ENTRY(get_groups);
 
 #undef API_TRAITS_ENTRY
 
