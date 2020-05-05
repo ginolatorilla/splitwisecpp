@@ -1,3 +1,8 @@
+// Copyright (c) 2020 Gino Latorilla.
+
+#ifndef SPLITWISECPP_CURLWRAPPER_H_
+#define SPLITWISECPP_CURLWRAPPER_H_
+
 #include <curl/curl.h>
 #include <iosfwd>
 #include <json/reader.h>
@@ -30,3 +35,5 @@ private:
 };
 
 }  // namespace splitwisecpp
+
+#endif  // SPLITWISECPP_CURLWRAPPER_H_
