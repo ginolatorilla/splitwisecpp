@@ -17,26 +17,28 @@ Splitwise::~Splitwise()
     delete Context::cast(_context);
 }
 
-#define API_REQUEST_AS_JSON(__method__) (Context::cast(_context)->api_request_as_json<ApiMethods::__method__>())
-#define API_REQUEST_AS_JSON_1(__method__, _1) (Context::cast(_context)->api_request_as_json<ApiMethods::__method__>(_1))
+#define API_REQUEST(__method__) \
+    (Context::cast(_context)->api_request_as_json<ApiMethods::__method__>())
+#define API_REQUEST_1(__method__, _1) \
+    (Context::cast(_context)->api_request_as_json<ApiMethods::__method__>(_1))
 
-Json Splitwise::get_current_user()
+Splitwise::ApiResponse Splitwise::get_current_user()
 {
-    return API_REQUEST_AS_JSON(get_current_user);
+    return API_REQUEST(get_current_user);
 }
 
-Json Splitwise::get_user(UserId id)
+Splitwise::ApiResponse Splitwise::get_user(UserId id)
 {
-    return API_REQUEST_AS_JSON_1(get_user, id);
+    return API_REQUEST_1(get_user, id);
 }
 
-Json Splitwise::get_groups()
+Splitwise::ApiResponse Splitwise::get_groups()
 {
-    return API_REQUEST_AS_JSON(get_groups);
+    return API_REQUEST(get_groups);
 }
 
-#undef API_REQUEST_AS_JSON
-#undef API_REQUEST_AS_JSON_1
+#undef API_REQUEST
+#undef API_REQUEST_1
 
 
 }  // namespace splitwisecpp
