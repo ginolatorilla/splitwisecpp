@@ -1,3 +1,8 @@
+// Copyright (c) 2020 Gino Latorilla.
+
+#ifndef SPLITWISECPP_API_TRAITS_H_
+#define SPLITWISECPP_API_TRAITS_H_
+
 #include <cstdint>
 
 namespace splitwisecpp
@@ -28,3 +33,5 @@ API_TRAITS_ENTRY(get_groups);
 #undef API_TRAITS_ENTRY
 
 }  // splitwisecpp
+
+#endif  // SPLITWISECPP_API_TRAITS_H_
