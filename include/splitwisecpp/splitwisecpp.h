@@ -11,6 +11,7 @@ namespace splitwisecpp
 
 using UnspecifiedPtr = void*;
 using Json = ::Json::Value;
+using UserId = std::uint32_t;
 
 struct Configuration
 {
@@ -27,6 +28,7 @@ public:
     ~Splitwise();
 
     Json get_current_user();
+    Json get_user(UserId id);
 
 
 private:
