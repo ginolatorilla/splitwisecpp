@@ -21,6 +21,8 @@ target_include_directories(${PROJECT_NAME}
         include
     PRIVATE
         src
+        lib/liboauthcpp/include
         ${libcurl_INCLUDE_DIRS}
         ${jsoncpp_INCLUDE_DIRS}
 )
+target_link_libraries(${PROJECT_NAME} PRIVATE oauthcpp)
