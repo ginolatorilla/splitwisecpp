@@ -27,7 +27,7 @@ ApiResponse Splitwise::get_current_user()
     return API_REQUEST(get_current_user);
 }
 
-ApiResponse Splitwise::get_user(UserId id)
+ApiResponse Splitwise::get_user(IdType id)
 {
     return API_REQUEST_1(get_user, id);
 }
@@ -40,6 +40,11 @@ ApiResponse Splitwise::get_groups()
 ApiResponse Splitwise::create_group(const Json& group)
 {
     return API_REQUEST_1(create_group, group);
+}
+
+ApiResponse Splitwise::delete_group(IdType id)
+{
+    return API_REQUEST_1(delete_group, id);
 }
 
 #undef API_REQUEST

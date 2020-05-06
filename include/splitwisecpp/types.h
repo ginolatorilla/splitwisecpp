@@ -11,7 +11,7 @@ namespace splitwisecpp
 
 using UnspecifiedPtr = void*;
 using Json = ::Json::Value;
-using UserId = std::uint32_t;
+using IdType = std::uint32_t;
 
 enum class ErrorCodes
 {
