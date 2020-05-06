@@ -5,7 +5,7 @@
 
 #include <memory>
 #include <type_traits>
-#include "splitwisecpp/splitwisecpp.h"
+#include "splitwisecpp/types.h"
 #include "curlwrapper.hpp"
 #include "api_traits.hpp"
 #include "metaprogramming.hpp"
@@ -30,14 +30,14 @@ public:
     }
 
     template<ApiMethods M>
-    Splitwise::ApiResponse api_request_as_json()
+    ApiResponse api_request_as_json()
     {
         auto signed_url = create_signed_api_url<M>();
         return api_request_as_json(signed_url.get());
     }
 
     template<ApiMethods M, class P1>
-    Splitwise::ApiResponse api_request_as_json(P1 param1)
+    ApiResponse api_request_as_json(P1 param1)
     {
         auto signed_url = create_signed_api_url<M>(param1);
         return api_request_as_json(signed_url.get());
@@ -47,7 +47,7 @@ private:
     using OAuthUrlType = std::unique_ptr<char, decltype(&::free)>;
 
     OAuthUrlType create_signed_api_url(const char* method, const std::string& fused_args);
-    Splitwise::ApiResponse api_request_as_json(char* signed_url);
+    ApiResponse api_request_as_json(char* signed_url);
 
     template<ApiMethods Method, class... Param>
     OAuthUrlType create_signed_api_url(Param... args)

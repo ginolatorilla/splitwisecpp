@@ -28,7 +28,7 @@ Context::OAuthUrlType Context::create_signed_api_url(const char* method, const s
     );
 }
 
-Splitwise::ApiResponse Context::api_request_as_json(char* signed_url)
+ApiResponse Context::api_request_as_json(char* signed_url)
 {
     ::Json::Value parsed;
     ::Json::CharReaderBuilder rb;
