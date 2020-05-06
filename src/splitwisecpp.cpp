@@ -37,6 +37,11 @@ ApiResponse Splitwise::get_groups()
     return API_REQUEST(get_groups);
 }
 
+ApiResponse Splitwise::create_group(const Json& group)
+{
+    return API_REQUEST_1(create_group, group);
+}
+
 #undef API_REQUEST
 #undef API_REQUEST_1
 

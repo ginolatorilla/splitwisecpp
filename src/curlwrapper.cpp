@@ -1,6 +1,7 @@
 #include "curlwrapper.hpp"
 #include <ostream>
 #include <cassert>
+#include <json/writer.h>
 
 namespace splitwisecpp
 {
@@ -27,6 +28,7 @@ namespace detail
 Curl::Curl() : handle(curl_easy_init())
 {
     ::curl_easy_setopt(handle, CURLOPT_FOLLOWLOCATION, 1);
+    ::curl_easy_setopt(handle, CURLOPT_DEFAULT_PROTOCOL, "https");
 }
 
 Curl::~Curl()
@@ -53,7 +55,32 @@ void Curl::set_write_to_json(detail::JsonReaderContext* context)
 
 ::CURLcode Curl::perform()
 {
-    return ::curl_easy_perform(handle);
+    auto perf_res = ::curl_easy_perform(handle);
+    ::curl_slist_free_all(placeholder);
+    placeholder = nullptr;
+    return perf_res;
+}
+
+::CURLcode Curl::set_to_GET()
+{
+    return ::curl_easy_setopt(handle, CURLOPT_HTTPGET, 1L);
+}
+
+::CURLcode Curl::set_to_POST(const char* auth_header, const ::Json::Value& data)
+{
+    ::curl_easy_setopt(handle, CURLOPT_CUSTOMREQUEST, "POST");
+
+    placeholder = ::curl_slist_append(placeholder, auth_header);
+    placeholder = ::curl_slist_append(placeholder, "Content-Type: application/json");
+    ::curl_easy_setopt(handle, CURLOPT_HTTPHEADER, placeholder);
+
+    ::Json::StreamWriterBuilder wb;
+    wb["indentation"] = "";
+    std::unique_ptr<::Json::StreamWriter> writer(wb.newStreamWriter());
+    std::stringstream output;
+    writer->write(data, &output);
+    post_data = output.str();
+    return ::curl_easy_setopt(handle, CURLOPT_POSTFIELDS, post_data.c_str());
 }
 
 }  // namespace splitwisecpp
