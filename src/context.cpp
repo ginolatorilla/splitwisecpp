@@ -6,7 +6,7 @@
 namespace splitwisecpp
 {
 
-const std::string BASEURL = "https://www.splitwise.com/api/v3.0/";
+const std::string BASEURL = "https://secure.splitwise.com/api/v3.0/";
 
 Context::Context(const Configuration* config_) :
     config(config_),

@@ -35,17 +35,17 @@ public:
     }
     
     template<ApiMethods M>
+    ApiResponse api_request_as_json(IdType id)
+    {
+        auto signed_urls = create_signed_api_url<M>(id);
+        return api_request_as_json(signed_urls, api_traits<M>::http_method, nullptr);
+    }
+
+    template<ApiMethods M>
     ApiResponse api_request_as_json(const Json& data)
     {
         auto signed_urls = create_signed_api_url<M>();
         return api_request_as_json(signed_urls, api_traits<M>::http_method, &data);
-    }
-
-    template<ApiMethods M, class P1>
-    ApiResponse api_request_as_json(P1 param1)
-    {
-        auto signed_urls = create_signed_api_url<M>(param1);
-        return api_request_as_json(signed_urls, api_traits<M>::http_method);
     }
 
 private:
@@ -65,7 +65,14 @@ private:
             >::value, "All arguments must be valid for std::to_string."
         );
 
-        return create_signed_api_url(api_traits<Method>::c_str, join_as_path_str(args...));
+        if (api_traits<Method>::http_method == HttpMethods::Get)
+        {
+            return create_signed_api_url(api_traits<Method>::c_str, join_as_path_str(args...));
+        }
+        else // Post
+        {
+            return BASEURL + api_traits<Method>::c_str + join_as_path_str(args...);
+        }
     }
 
     const Configuration* config;

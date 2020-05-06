@@ -13,22 +13,30 @@ enum class ApiMethods : std::uint32_t
     get_current_user,
     get_user,
     get_groups,
-    _count // Trick for counting number of enumerators
+    create_group,
+};
+
+enum class HttpMethods
+{
+    Get,
+    Post
 };
 
 template<ApiMethods M>
 struct api_traits
 {};
 
-#define API_TRAITS_ENTRY(NAME) \
+#define API_TRAITS_ENTRY(NAME, HTTPMETHOD) \
     template<> struct api_traits<ApiMethods::NAME> \
     { \
         static constexpr const char* const c_str = #NAME; \
+        static constexpr HttpMethods http_method = HTTPMETHOD; \
     }
 
-API_TRAITS_ENTRY(get_current_user);
-API_TRAITS_ENTRY(get_user);
-API_TRAITS_ENTRY(get_groups);
+API_TRAITS_ENTRY(get_current_user, HttpMethods::Get);
+API_TRAITS_ENTRY(get_user, HttpMethods::Get);
+API_TRAITS_ENTRY(get_groups, HttpMethods::Get);
+API_TRAITS_ENTRY(create_group, HttpMethods::Post);
 
 #undef API_TRAITS_ENTRY
 

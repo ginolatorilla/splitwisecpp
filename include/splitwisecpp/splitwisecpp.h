@@ -18,6 +18,8 @@ public:
     ApiResponse get_user(UserId id);
     ApiResponse get_groups();
 
+    ApiResponse create_group(const Json& group);
+
 private:
     UnspecifiedPtr _context;
 };
