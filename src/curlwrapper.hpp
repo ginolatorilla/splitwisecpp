@@ -30,7 +30,7 @@ public:
     ::CURLcode set_url(const char* url);
     ::CURLcode perform();
     ::CURLcode set_to_GET();
-    ::CURLcode set_to_POST(const char* auth_header, const ::Json::Value& data);
+    ::CURLcode set_to_POST(const char* auth_header, const ::Json::Value* data);
 
 private:
     ::CURL* handle;

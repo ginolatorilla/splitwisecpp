@@ -14,6 +14,7 @@ enum class ApiMethods : std::uint32_t
     get_user,
     get_groups,
     create_group,
+    delete_group,
 };
 
 enum class HttpMethods
@@ -37,6 +38,7 @@ API_TRAITS_ENTRY(get_current_user, HttpMethods::Get);
 API_TRAITS_ENTRY(get_user, HttpMethods::Get);
 API_TRAITS_ENTRY(get_groups, HttpMethods::Get);
 API_TRAITS_ENTRY(create_group, HttpMethods::Post);
+API_TRAITS_ENTRY(delete_group, HttpMethods::Post);
 
 #undef API_TRAITS_ENTRY
 

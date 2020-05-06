@@ -15,10 +15,11 @@ public:
     ~Splitwise();
 
     ApiResponse get_current_user();
-    ApiResponse get_user(UserId id);
+    ApiResponse get_user(IdType id);
     ApiResponse get_groups();
 
     ApiResponse create_group(const Json& group);
+    ApiResponse delete_group(IdType id);
 
 private:
     UnspecifiedPtr _context;

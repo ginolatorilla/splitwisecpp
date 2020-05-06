@@ -38,7 +38,7 @@ public:
     ApiResponse api_request_as_json(IdType id)
     {
         auto signed_urls = create_signed_api_url<M>(id);
-        return api_request_as_json(signed_urls, api_traits<M>::http_method, nullptr);
+        return api_request_as_json(signed_urls, api_traits<M>::http_method);
     }
 
     template<ApiMethods M>

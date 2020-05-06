@@ -50,8 +50,7 @@ ApiResponse Context::api_request_as_json(const std::string& signed_url, HttpMeth
         }
         case HttpMethods::Post:
         {
-            assert(post_data != nullptr);
-            curl.set_to_POST(oauth_client->getFormattedHttpHeader(OAuth::Http::Post, signed_url).c_str(), *post_data);
+            curl.set_to_POST(oauth_client->getFormattedHttpHeader(OAuth::Http::Post, signed_url).c_str(), post_data);
             break;        
         }
     }
