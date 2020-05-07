@@ -1,5 +1,6 @@
 #include "fixture.hpp"
 #include "matchers.hpp"
+#include <gmock/gmock-more-actions.h>
 #include <splitwisecpp/splitwisecpp.h>
 
 namespace testing
@@ -56,4 +57,27 @@ Matcher<void*> splitwisecpp_api_tests::SignedHttp(
             HasSubstr(std::string("oauth_token=") + test_config.oauth1_token)));
 }
 
+void splitwisecpp_api_tests::expect_for_http_get_api_request(
+    const std::string& method)
+{
+    EXPECT_CALL(
+        mock_curl(),
+        curl_easy_setopt_voidp(dummy_curl, CURLOPT_URL, SignedHttp(method)))
+        .Times(1);
+    EXPECT_CALL(mock_curl(),
+                curl_easy_setopt_long(dummy_curl, CURLOPT_HTTPGET, 1L))
+        .Times(1);
+    EXPECT_CALL(
+        mock_curl(),
+        curl_easy_setopt_voidp(dummy_curl, CURLOPT_WRITEFUNCTION, NotNull()))
+        .Times(1)
+        .WillOnce(
+            DoAll(SaveArg<2>(&captured_write_callback), Return(CURLE_OK)));
+    EXPECT_CALL(
+        mock_curl(),
+        curl_easy_setopt_voidp(dummy_curl, CURLOPT_WRITEDATA, NotNull()))
+        .Times(1)
+        .WillOnce(
+            DoAll(SaveArg<2>(&captured_write_callback_arg), Return(CURLE_OK)));
+}
 }  // namespace testing

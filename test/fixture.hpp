@@ -28,10 +28,15 @@ protected:
 
     Matcher<void*> SignedHttp(const std::string& method) const;
 
+    void expect_for_http_get_api_request(const std::string& method);
+
     splitwisecpp::Configuration test_config;
     std::unique_ptr<splitwisecpp::Splitwise> splitwise;
-    CURL* dummy_curl = (CURL*)0x77777777c0c0fefe;
     ScopedMockCurl scoped_mock;
+    CURL* dummy_curl = (CURL*)0x77777777c0c0fefe;
+
+    void* captured_write_callback = nullptr;
+    void* captured_write_callback_arg = nullptr;
 };
 }  // namespace testing
 
