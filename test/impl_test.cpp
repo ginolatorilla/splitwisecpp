@@ -52,4 +52,20 @@ TEST_F(splitwisecpp_api_tests, get_current_user)
     auto user = splitwise->get_current_user();
     ASSERT_EQ(splitwisecpp::ErrorCodes::NoError, user.error);
 }
+
+TEST_F(splitwisecpp_api_tests, get_user)
+{
+    expect_for_http_get_api_request("get_user/12345");
+    EXPECT_CALL(mock_curl(), curl_easy_perform(dummy_curl)).Times(1);
+    auto user = splitwise->get_user(12345);
+    ASSERT_EQ(splitwisecpp::ErrorCodes::NoError, user.error);
+}
+
+TEST_F(splitwisecpp_api_tests, get_groups)
+{
+    expect_for_http_get_api_request("get_groups");
+    EXPECT_CALL(mock_curl(), curl_easy_perform(dummy_curl)).Times(1);
+    auto user = splitwise->get_groups();
+    ASSERT_EQ(splitwisecpp::ErrorCodes::NoError, user.error);
+}
 }  // namespace testing
