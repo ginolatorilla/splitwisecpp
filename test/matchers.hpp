@@ -2,6 +2,7 @@
 #define SPLITWISE_TESTING_MATCHERS_HPP_
 
 #include <gmock/gmock-matchers.h>
+#include <json/json.h>
 
 namespace testing
 {
@@ -25,11 +26,16 @@ MATCHER_P(VoidPtrToCString, matcher, detail::describe(matcher, negation))
     return matcher.impl().MatchAndExplain((const char*)arg, result_listener);
 }
 
-Action<::CURLcode(::CURL*)> HttpResponse(const std::string& json,
-                                         void*& write_callback,
-                                         void*& write_callback_arg);
-
-
+MATCHER_P(AsJson, expected, "")
+{
+    std::string arg_str = reinterpret_cast<char*>(arg);
+    Json::CharReaderBuilder builder;
+    std::unique_ptr<Json::CharReader> reader(builder.newCharReader());
+    Json::Value actual;
+    reader->parse(arg_str.c_str(), arg_str.c_str() + arg_str.size(), &actual, nullptr);
+    *result_listener << actual;
+    return expected == actual;
+}
 }  // namespace testing
 
 #endif  // SPLITWISE_TESTING_MATCHERS_HPP_
