@@ -11,11 +11,12 @@ include(PrepareGoogleTest)
 # Integrate with CTest so you can run GTests with `cmake --build . -- test`
 # One test executable per CPP in the `test/` directory.
 macro(add_gtest test_name)
-    add_executable(${test_name} "test/${test_name}.cpp")
+    add_executable(${test_name} "test/${test_name}.cpp" test/fixture.cpp test/MockCurl.cpp)
     if (TARGET googletest)
         add_dependencies(${test_name} googletest)
     endif()
-    target_link_libraries(${test_name} ${PROJECT_NAME} ${GTEST_BOTH_LIBRARIES} pthread)
+    target_include_directories(${test_name} PRIVATE src)
+    target_link_libraries(${test_name} ${PROJECT_NAME} ${GTEST_BOTH_LIBRARIES} pthread jsoncpp)
     add_test(NAME ${test_name} COMMAND ${test_name})
 endmacro()
 
