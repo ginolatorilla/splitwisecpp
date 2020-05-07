@@ -26,3 +26,17 @@ target_include_directories(${PROJECT_NAME}
         ${jsoncpp_INCLUDE_DIRS}
 )
 target_link_libraries(${PROJECT_NAME} PRIVATE oauthcpp)
+
+add_custom_target(coverage
+    COMMAND gcovr -j -r ${CMAKE_CURRENT_SOURCE_DIR} -f ${CMAKE_CURRENT_SOURCE_DIR}/src -f ${CMAKE_CURRENT_SOURCE_DIR}/include
+)
+add_custom_target(coverage-wipe
+    COMMAND find ${CMAKE_CURRENT_BINARY_DIR} -name '*.gcda' -delete
+)
+add_custom_target(coverage-html
+    COMMAND mkdir -p ${CMAKE_CURRENT_BINARY_DIR}/coverage
+    COMMAND
+        gcovr -j -r ${CMAKE_CURRENT_SOURCE_DIR} -f ${CMAKE_CURRENT_SOURCE_DIR}/src -f ${CMAKE_CURRENT_SOURCE_DIR}/include
+        --html-details --output ${CMAKE_CURRENT_BINARY_DIR}/coverage/${PROJECT_NAME}-coverage.html
+    COMMAND xdg-open ${CMAKE_CURRENT_BINARY_DIR}/coverage/${PROJECT_NAME}-coverage.html
+)

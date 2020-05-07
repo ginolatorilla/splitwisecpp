@@ -12,4 +12,5 @@ add_build_option(USE_LATEST_GTEST "Download Google Test from GitHub, then build 
 add_build_option(SKIP_GTEST_UPDATE "Skip updating of Google Test during build step.")
 add_build_option(ENABLE_SANITIZERS "Enable address sanitisers (address and undefined) for tests.")
 add_build_option(ENABLE_CLANG_TIDY "Enable static analysis with clang-tidy.")
+add_build_option(ENABLE_CODE_COVERAGE "Enable code coverage with gcovr.")
 

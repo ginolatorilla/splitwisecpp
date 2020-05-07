@@ -22,6 +22,10 @@ add_cxx_flag(-pipe)
 add_cxx_flag(-fno-rtti)
 add_cxx_flag(-fno-exceptions)
 
+if(${PROJECT_NAME}_ENABLE_CODE_COVERAGE)
+    add_cxx_flag(--coverage)
+endif()
+
 if(${PROJECT_NAME}_ENABLE_TESTING AND ${PROJECT_NAME}_ENABLE_SANITIZERS)
     add_cxx_flag(-fsanitize=address,undefined)
 endif()
