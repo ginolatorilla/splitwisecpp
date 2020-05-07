@@ -35,11 +35,20 @@ TEST_F(splitwisecpp_api_tests, generic_cannot_find_server)
     ASSERT_EQ(splitwisecpp::ErrorCodes::NetworkError, user.error);
 }
 
-TEST_F(splitwisecpp_api_tests, DISABLED_generic_out_of_memory)
+TEST_F(splitwisecpp_api_tests, generic_out_of_memory)
 {
     EXPECT_CALL(mock_curl(), curl_easy_setopt_voidp(dummy_curl, CURLOPT_URL, _))
         .Times(1)
         .WillOnce(Return(CURLE_OUT_OF_MEMORY));
+    EXPECT_CALL(mock_curl(),
+                curl_easy_setopt_voidp(
+                    dummy_curl, CURLOPT_WRITEDATA, _))  // TODO: Remove in code
+        .Times(1);
+    EXPECT_CALL(mock_curl(),
+                curl_easy_setopt_voidp(dummy_curl,
+                                       CURLOPT_WRITEFUNCTION,
+                                       _))  // TODO: Remove in code
+        .Times(1);
 
     auto user = splitwise->get_current_user();
     ASSERT_EQ(splitwisecpp::ErrorCodes::OutOfMemory, user.error);
@@ -86,7 +95,8 @@ TEST_F(splitwisecpp_api_tests, create_group)
                                        VoidPtrToCString(StrEq("POST"))))
         .Times(1);
     EXPECT_CALL(mock_curl(),
-                curl_easy_setopt_long(dummy_curl, CURLOPT_VERBOSE, 1L)) // TODO: Remove in code
+                curl_easy_setopt_long(
+                    dummy_curl, CURLOPT_VERBOSE, 1L))  // TODO: Remove in code
         .Times(1);
     EXPECT_CALL(mock_curl(),
                 curl_easy_setopt_voidp(
