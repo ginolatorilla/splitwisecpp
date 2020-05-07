@@ -24,6 +24,12 @@ MATCHER_P(VoidPtrToCString, matcher, detail::describe(matcher, negation))
     *result_listener << "\"" << (const char*)arg << "\"";
     return matcher.impl().MatchAndExplain((const char*)arg, result_listener);
 }
+
+Action<::CURLcode(::CURL*)> HttpResponse(const std::string& json,
+                                         void*& write_callback,
+                                         void*& write_callback_arg);
+
+
 }  // namespace testing
 
 #endif  // SPLITWISE_TESTING_MATCHERS_HPP_

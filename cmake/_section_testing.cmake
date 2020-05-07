@@ -11,7 +11,7 @@ include(PrepareGoogleTest)
 # Integrate with CTest so you can run GTests with `cmake --build . -- test`
 # One test executable per CPP in the `test/` directory.
 macro(add_gtest test_name)
-    add_executable(${test_name} "test/${test_name}.cpp" test/fixture.cpp test/MockCurl.cpp)
+    add_executable(${test_name} "test/${test_name}.cpp" test/fixture.cpp test/MockCurl.cpp test/actions.cpp)
     if (TARGET googletest)
         add_dependencies(${test_name} googletest)
     endif()
