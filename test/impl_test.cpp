@@ -139,4 +139,53 @@ TEST_F(splitwisecpp_api_tests, create_group)
     }());
     ASSERT_EQ(splitwisecpp::ErrorCodes::NoError, user.error);
 }
+
+TEST_F(splitwisecpp_api_tests, delete_group)
+{
+    ::curl_slist* dummy_slist = (::curl_slist*)0x5050ffffecec0a0a;
+
+    EXPECT_CALL(
+        mock_curl(),
+        curl_easy_setopt_voidp(
+            dummy_curl,
+            CURLOPT_URL,
+            VoidPtrToCString(StrEq(
+                "https://secure.splitwise.com/api/v3.0/delete_group/12345"))))
+        .Times(1);
+    EXPECT_CALL(mock_curl(),
+                curl_easy_setopt_voidp(dummy_curl,
+                                       CURLOPT_CUSTOMREQUEST,
+                                       VoidPtrToCString(StrEq("POST"))))
+        .Times(1);
+    EXPECT_CALL(mock_curl(),
+                curl_easy_setopt_long(
+                    dummy_curl, CURLOPT_VERBOSE, 1L))  // TODO: Remove in code
+        .Times(1);
+    EXPECT_CALL(mock_curl(),
+                curl_easy_setopt_voidp(
+                    dummy_curl, CURLOPT_WRITEDATA, _))  // TODO: Remove in code
+        .Times(1);
+    EXPECT_CALL(mock_curl(),
+                curl_easy_setopt_voidp(dummy_curl,
+                                       CURLOPT_WRITEFUNCTION,
+                                       _))  // TODO: Remove in code
+        .Times(1);
+    EXPECT_CALL(mock_curl(),
+                curl_slist_append(IsNull(), StartsWith("Authorization: OAuth")))
+        .Times(1)
+        .WillOnce(Return(dummy_slist));
+    EXPECT_CALL(mock_curl(),
+                curl_slist_append(dummy_slist,
+                                  StartsWith("Content-Type: application/json")))
+        .Times(1)
+        .WillOnce(Return(dummy_slist));
+    EXPECT_CALL(
+        mock_curl(),
+        curl_easy_setopt_voidp(dummy_curl, CURLOPT_HTTPHEADER, dummy_slist))
+        .Times(1);
+    EXPECT_CALL(mock_curl(), curl_easy_perform(dummy_curl)).Times(1);
+    EXPECT_CALL(mock_curl(), curl_slist_free_all(dummy_slist)).Times(1);
+    auto user = splitwise->delete_group(12345);
+    ASSERT_EQ(splitwisecpp::ErrorCodes::NoError, user.error);
+}
 }  // namespace testing
