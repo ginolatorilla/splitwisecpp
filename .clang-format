@@ -1,0 +1,14 @@
+BasedOnStyle: Microsoft
+Language: Cpp
+ColumnLimit: 80
+PointerAlignment: Left
+BinPackArguments: false
+BinPackParameters: false
+AccessModifierOffset: -4
+FixNamespaceComments: true
+ReflowComments: true
+SpacesBeforeTrailingComments: 2
+KeepEmptyLinesAtTheStartOfBlocks: false
+NamespaceIndentation: Inner
+SortIncludes: true
+AllowShortLambdasOnASingleLine: true
