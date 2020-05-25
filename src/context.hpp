@@ -3,12 +3,10 @@
 #ifndef SPLITWISECPP_CONTEXT_H_
 #define SPLITWISECPP_CONTEXT_H_
 
-#include "api_traits.hpp"
 #include "curlwrapper.hpp"
 #include "liboauthcpp/liboauthcpp.h"
 #include "splitwisecpp/types.h"
 #include <memory>
-#include <type_traits>
 
 namespace splitwisecpp
 {

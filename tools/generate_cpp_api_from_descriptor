@@ -14,8 +14,6 @@ PUBLIC_API_HEADER_PATH = os.path.join(PROJECT_ROOT, "include", "splitwisecpp",
                                       "splitwisecpp.h")
 IMPL_SOURCE_PATH = os.path.join(PROJECT_ROOT, "src", "splitwisecpp.cpp")
 IMPL_SOURCE_TEMPLATE_PATH = IMPL_SOURCE_PATH + ".jinja2"
-METHOD_TRAITS_PATH = os.path.join(PROJECT_ROOT, "src", "api_traits.hpp")
-METHOD_TRAITS_TEMPLATE_PATH = METHOD_TRAITS_PATH + ".jinja2"
 
 
 def main():
@@ -23,7 +21,6 @@ def main():
     descriptors['gen_time'] = datetime.isoformat(datetime.now())
     generate(descriptors, PUBLIC_API_TEMPLATE_PATH, PUBLIC_API_HEADER_PATH)
     generate(descriptors, IMPL_SOURCE_TEMPLATE_PATH, IMPL_SOURCE_PATH)
-    generate(descriptors, METHOD_TRAITS_TEMPLATE_PATH, METHOD_TRAITS_PATH)
 
 
 def load_descriptors():

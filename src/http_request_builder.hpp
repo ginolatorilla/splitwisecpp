@@ -3,7 +3,6 @@
 #ifndef SPLITWISECPP_HTTP_REQUEST_BUILDER_H_
 #define SPLITWISECPP_HTTP_REQUEST_BUILDER_H_
 
-#include "api_traits.hpp"
 #include "curlwrapper.hpp"
 #include "splitwisecpp/types.h"
 #include <string>
@@ -13,6 +12,12 @@ namespace splitwisecpp
 struct HttpGetRequestBuilder;
 struct HttpPostRequestBuilder;
 class Context;
+
+enum class HttpMethods
+{
+    Get,
+    Post
+};
 
 template <HttpMethods M> struct builder
 {
