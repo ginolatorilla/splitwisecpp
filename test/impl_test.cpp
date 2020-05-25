@@ -10,7 +10,7 @@
 
 namespace testing
 {
-TEST_F(splitwisecpp_api_tests, generic_respond_with_json_string)
+TEST_F(splitwisecpp_api_tests, respond_with_json_string)
 {
     expect_for_http_get_api_request("get_current_user");
     EXPECT_CALL(mock_curl(), curl_easy_perform(dummy_curl))
@@ -24,7 +24,7 @@ TEST_F(splitwisecpp_api_tests, generic_respond_with_json_string)
     ASSERT_EQ(splitwisecpp::ErrorCodes::NoError, user.error);
 }
 
-TEST_F(splitwisecpp_api_tests, generic_cannot_find_server)
+TEST_F(splitwisecpp_api_tests, cannot_find_server)
 {
     expect_for_http_get_api_request("get_current_user");
     EXPECT_CALL(mock_curl(), curl_easy_perform(dummy_curl))
@@ -35,26 +35,27 @@ TEST_F(splitwisecpp_api_tests, generic_cannot_find_server)
     ASSERT_EQ(splitwisecpp::ErrorCodes::NetworkError, user.error);
 }
 
-TEST_F(splitwisecpp_api_tests, generic_out_of_memory)
+TEST_F(splitwisecpp_api_tests, out_of_memory)
 {
     EXPECT_CALL(mock_curl(), curl_easy_setopt_voidp(dummy_curl, CURLOPT_URL, _))
         .Times(1)
         .WillOnce(Return(CURLE_OUT_OF_MEMORY));
     EXPECT_CALL(mock_curl(),
                 curl_easy_setopt_voidp(
-                    dummy_curl, CURLOPT_WRITEDATA, _))  // TODO: Remove in code
+                    dummy_curl, CURLOPT_WRITEDATA, _))
         .Times(1);
     EXPECT_CALL(mock_curl(),
                 curl_easy_setopt_voidp(dummy_curl,
                                        CURLOPT_WRITEFUNCTION,
-                                       _))  // TODO: Remove in code
+                                       _))
         .Times(1);
+    EXPECT_CALL(mock_curl(), curl_easy_perform(dummy_curl)).Times(0);
 
     auto user = splitwise->get_current_user();
     ASSERT_EQ(splitwisecpp::ErrorCodes::OutOfMemory, user.error);
 }
 
-TEST_F(splitwisecpp_api_tests, get_current_user)
+TEST_F(splitwisecpp_api_tests, http_get_without_parameters)
 {
     expect_for_http_get_api_request("get_current_user");
     EXPECT_CALL(mock_curl(), curl_easy_perform(dummy_curl)).Times(1);
@@ -62,7 +63,7 @@ TEST_F(splitwisecpp_api_tests, get_current_user)
     ASSERT_EQ(splitwisecpp::ErrorCodes::NoError, user.error);
 }
 
-TEST_F(splitwisecpp_api_tests, get_user)
+TEST_F(splitwisecpp_api_tests, http_get_with_parameter)
 {
     expect_for_http_get_api_request("get_user/12345");
     EXPECT_CALL(mock_curl(), curl_easy_perform(dummy_curl)).Times(1);
@@ -78,7 +79,7 @@ TEST_F(splitwisecpp_api_tests, get_groups)
     ASSERT_EQ(splitwisecpp::ErrorCodes::NoError, user.error);
 }
 
-TEST_F(splitwisecpp_api_tests, create_group)
+TEST_F(splitwisecpp_api_tests, http_post_with_payload_and_without_parameter)
 {
     ::curl_slist* dummy_slist = (::curl_slist*)0x5050ffffecec0a0a;
 
@@ -95,17 +96,13 @@ TEST_F(splitwisecpp_api_tests, create_group)
                                        VoidPtrToCString(StrEq("POST"))))
         .Times(1);
     EXPECT_CALL(mock_curl(),
-                curl_easy_setopt_long(
-                    dummy_curl, CURLOPT_VERBOSE, 1L))  // TODO: Remove in code
-        .Times(1);
-    EXPECT_CALL(mock_curl(),
                 curl_easy_setopt_voidp(
-                    dummy_curl, CURLOPT_WRITEDATA, _))  // TODO: Remove in code
+                    dummy_curl, CURLOPT_WRITEDATA, _))
         .Times(1);
     EXPECT_CALL(mock_curl(),
                 curl_easy_setopt_voidp(dummy_curl,
                                        CURLOPT_WRITEFUNCTION,
-                                       _))  // TODO: Remove in code
+                                       _))
         .Times(1);
     EXPECT_CALL(mock_curl(),
                 curl_slist_append(IsNull(), StartsWith("Authorization: OAuth")))
@@ -140,7 +137,7 @@ TEST_F(splitwisecpp_api_tests, create_group)
     ASSERT_EQ(splitwisecpp::ErrorCodes::NoError, user.error);
 }
 
-TEST_F(splitwisecpp_api_tests, delete_group)
+TEST_F(splitwisecpp_api_tests, http_post_without_payload_and_with_parameter)
 {
     ::curl_slist* dummy_slist = (::curl_slist*)0x5050ffffecec0a0a;
 
@@ -158,17 +155,13 @@ TEST_F(splitwisecpp_api_tests, delete_group)
                                        VoidPtrToCString(StrEq("POST"))))
         .Times(1);
     EXPECT_CALL(mock_curl(),
-                curl_easy_setopt_long(
-                    dummy_curl, CURLOPT_VERBOSE, 1L))  // TODO: Remove in code
-        .Times(1);
-    EXPECT_CALL(mock_curl(),
                 curl_easy_setopt_voidp(
-                    dummy_curl, CURLOPT_WRITEDATA, _))  // TODO: Remove in code
+                    dummy_curl, CURLOPT_WRITEDATA, _))
         .Times(1);
     EXPECT_CALL(mock_curl(),
                 curl_easy_setopt_voidp(dummy_curl,
                                        CURLOPT_WRITEFUNCTION,
-                                       _))  // TODO: Remove in code
+                                       _))
         .Times(1);
     EXPECT_CALL(mock_curl(),
                 curl_slist_append(IsNull(), StartsWith("Authorization: OAuth")))

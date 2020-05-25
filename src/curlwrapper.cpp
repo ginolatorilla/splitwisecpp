@@ -56,8 +56,11 @@ void Curl::set_write_to_json(detail::JsonReaderContext* context)
 ::CURLcode Curl::perform()
 {
     auto perf_res = ::curl_easy_perform(handle);
-    ::curl_slist_free_all(placeholder);
-    placeholder = nullptr;
+    if (placeholder != nullptr)
+    {
+        ::curl_slist_free_all(placeholder);
+        placeholder = nullptr;
+    }
     return perf_res;
 }
 
@@ -69,7 +72,6 @@ void Curl::set_write_to_json(detail::JsonReaderContext* context)
 ::CURLcode Curl::set_to_POST(const char* auth_header, const ::Json::Value* data)
 {
     ::curl_easy_setopt(handle, CURLOPT_CUSTOMREQUEST, "POST");
-    ::curl_easy_setopt(handle, CURLOPT_VERBOSE, 1);
 
     placeholder = ::curl_slist_append(placeholder, auth_header);
     placeholder = ::curl_slist_append(placeholder, "Content-Type: application/json");
