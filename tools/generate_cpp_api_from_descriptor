@@ -1,0 +1,38 @@
+#!/usr/bin/env python3
+import os
+import yaml
+from collections.abc import Mapping
+import jinja2
+from datetime import datetime
+
+PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+DESCRIPTORS_FILE_PATH = os.path.join(PROJECT_ROOT, "src",
+                                     "api_method_descriptors.yaml")
+PUBLIC_API_TEMPLATE_PATH = os.path.join(PROJECT_ROOT, "src",
+                                        "splitwisecpp.h.jinja2")
+PUBLIC_API_HEADER_PATH = os.path.join(PROJECT_ROOT, "include", "splitwisecpp",
+                                      "splitwisecpp.h")
+IMPL_SOURCE_PATH = os.path.join(PROJECT_ROOT, "src", "splitwisecpp.cpp")
+METHOD_TRAITS_PATH = os.path.join(PROJECT_ROOT, "src", "api_traits.hpp")
+
+
+def main():
+    descriptors = load_descriptors()
+    descriptors['gen_time'] = datetime.isoformat(datetime.now())
+    generate(descriptors, PUBLIC_API_TEMPLATE_PATH, PUBLIC_API_HEADER_PATH)
+
+
+def load_descriptors():
+    with open(DESCRIPTORS_FILE_PATH) as descriptors_file:
+        return yaml.safe_load(descriptors_file)
+
+
+def generate(descriptors, template_file_path, output_file_path):
+    with open(template_file_path) as template_file:
+        template = jinja2.Template(template_file.read())
+    with open(output_file_path, "w") as output_file:
+        output_file.write(template.render(descriptors))
+
+
+if __name__ == "__main__":
+    main()
