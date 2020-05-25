@@ -1,7 +1,8 @@
-{%- macro to_cpp_func_params(param_descriptors) %}
-    {%- for pd in param_descriptors -%}
+{%- macro to_cpp_func_params(method_descriptor) %}
+    {%- for pd in method_descriptor.param_descriptors -%}
         {{pd.cpptype}} {{pd.name}}{{", " if not loop.last}}
     {%- endfor -%}
+    {%- if method_descriptor.payload -%}{{", " if method_descriptor.param_descriptors}}const Json& payload {%- endif -%}
 {% endmacro -%}
 // Copyright (c) 2020 Gino Latorilla.
 
@@ -19,7 +20,7 @@ public:
     explicit Splitwise(const Configuration& config);
     ~Splitwise();
 {% for md in method_descriptors %}
-    ApiResponse {{ md.name }}({{to_cpp_func_params(md.param_descriptors)}});
+    ApiResponse {{ md.name }}({{to_cpp_func_params(md)}});
 {%- endfor %}
 
 private:

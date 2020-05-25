@@ -7,6 +7,7 @@ version: 0.9
 # schema for method_descriptor:
 #   name: string
 #   http_method: Get | Post
+#   payload: bool, optional (only for http_method == Post)
 #   param_descriptors: array of param_descriptor, optional
 
 # schema for param_descriptor:
@@ -25,9 +26,7 @@ method_descriptors:
     http_method: Get
   - name: create_group
     http_method: Post
-    param_descriptors:
-    - name: group
-      cpptype: const Json&
+    payload: True
   - name: delete_group
     http_method: Post
     param_descriptors:
