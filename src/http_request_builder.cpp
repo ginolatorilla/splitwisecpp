@@ -27,6 +27,11 @@ HttpGetRequestBuilder& HttpGetRequestBuilder::with_uri(const std::string& uri)
 ApiResponse HttpGetRequestBuilder::send()
 {
     assemble_curl_query();
+    if (error_code != ErrorCodes::NoError)
+    {
+        return {response, error_code};
+    }
+
     if (context->curl.perform() != CURLE_OK)
     {
         error_code = ErrorCodes::NetworkError;
