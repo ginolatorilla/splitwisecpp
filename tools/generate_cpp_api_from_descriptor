@@ -23,6 +23,7 @@ def main():
     descriptors['gen_time'] = datetime.isoformat(datetime.now())
     generate(descriptors, PUBLIC_API_TEMPLATE_PATH, PUBLIC_API_HEADER_PATH)
     generate(descriptors, IMPL_SOURCE_TEMPLATE_PATH, IMPL_SOURCE_PATH)
+    generate(descriptors, METHOD_TRAITS_TEMPLATE_PATH, METHOD_TRAITS_PATH)
 
 
 def load_descriptors():
@@ -30,7 +31,8 @@ def load_descriptors():
         return yaml.safe_load(descriptors_file)
 
 
-def generate(descriptors, template_file_path, output_file_path):
+def generate(descriptors: Mapping, template_file_path: str,
+             output_file_path: str):
     with open(template_file_path) as template_file:
         template = jinja2.Template(template_file.read())
     with open(output_file_path, "w") as output_file:

@@ -1,0 +1,38 @@
+// Copyright (c) 2020 Gino Latorilla.
+
+#ifndef SPLITWISECPP_API_TRAITS_H_
+#define SPLITWISECPP_API_TRAITS_H_
+
+#include <cstdint>
+
+namespace splitwisecpp
+{
+
+enum class ApiMethods : std::uint32_t
+{
+    {{ method_descriptors | map(attribute='name') | join(",\n") | indent }}
+};
+
+enum class HttpMethods
+{
+    Get,
+    Post
+};
+
+template<ApiMethods M>
+struct api_traits
+{};
+{% for md in method_descriptors %}
+template<> struct api_traits<ApiMethods::{{md.name}}>
+{
+    static constexpr const char* const c_str = "{{md.name}}";
+    static constexpr HttpMethods http_method = HttpMethods::{{md.http_method}};
+};
+{% endfor %}
+}  // namespace splitwisecpp
+
+#endif  // SPLITWISECPP_API_TRAITS_H_
+
+// DO NOT EDIT BY HAND!
+// 'tools/generate_cpp_api_from_descriptor' created me on {{gen_time}} from descriptor version {{ version }}
+

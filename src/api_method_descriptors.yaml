@@ -6,6 +6,7 @@ version: 0.9
 
 # schema for method_descriptor:
 #   name: string
+#   http_method: Get | Post
 #   param_descriptors: array of param_descriptor, optional
 
 # schema for param_descriptor:
@@ -14,16 +15,21 @@ version: 0.9
 
 method_descriptors:
   - name:  get_current_user
+    http_method: Get
   - name: get_user
+    http_method: Get
     param_descriptors:
     - name: id
       cpptype: IdType
   - name: get_groups
+    http_method: Get
   - name: create_group
+    http_method: Post
     param_descriptors:
     - name: group
       cpptype: const Json&
   - name: delete_group
+    http_method: Post
     param_descriptors:
     - name: id
       cpptype: IdType
