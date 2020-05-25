@@ -16,8 +16,14 @@ namespace splitwisecpp
 
 extern const std::string BASEURL;
 
-class Context
+struct Context
 {
+    const Configuration* config;
+    Curl curl;
+    OAuth::Consumer oauth_consumer;
+    OAuth::Token oauth_token;
+    std::unique_ptr<OAuth::Client> oauth_client;
+
 public:
     Context(const Configuration* config_);
     ~Context();
@@ -74,12 +80,6 @@ private:
             return BASEURL + api_traits<Method>::c_str + join_as_path_str(args...);
         }
     }
-
-    const Configuration* config;
-    Curl curl;
-    OAuth::Consumer oauth_consumer;
-    OAuth::Token oauth_token;
-    std::unique_ptr<OAuth::Client> oauth_client;
 };
 
 }  // namespace spliwisecpp

@@ -1,12 +1,14 @@
-{%- macro to_cpp_func_params(param_descriptors) %}
-    {%- for pd in param_descriptors -%}
+{%- macro to_cpp_func_params(method_descriptor) %}
+    {%- for pd in method_descriptor.param_descriptors -%}
         {{pd.cpptype}} {{pd.name}}{{", " if not loop.last}}
     {%- endfor -%}
+    {%- if method_descriptor.payload -%}{{", " if method_descriptor.param_descriptors}}const Json& payload {%- endif -%}
 {% endmacro -%}
 // Copyright (c) 2020 Gino Latorilla.
 
 #include "splitwisecpp/splitwisecpp.h"
 #include "context.hpp"
+#include "http_request_builder.hpp"
 #include <array>
 
 namespace splitwisecpp
@@ -22,9 +24,17 @@ Splitwise::~Splitwise()
     delete Context::cast(_context);
 }
 {% for md in method_descriptors %}
-ApiResponse Splitwise::{{ md.name }}({{to_cpp_func_params(md.param_descriptors)}})
+ApiResponse Splitwise::{{ md.name }}({{to_cpp_func_params(md)}})
 {
-    return Context::cast(_context)->api_request_as_json<ApiMethods::{{md.name}}>({{ md.param_descriptors|map(attribute='name')|join(", ")}});
+    return build_http_request<HttpMethods::{{md.http_method}}>(Context::cast(_context))
+        {%- if md.payload %}
+                .with_json_payload(payload)
+        {%- endif %}
+                .with_uri("{{md.name}}")
+        {%- for pd in md.param_descriptors %}
+                .with_param({{pd.name}})
+        {%- endfor %}
+                .send();
 }
 {% endfor %}
 }  // namespace splitwisecpp

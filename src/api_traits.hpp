@@ -62,4 +62,4 @@ template<> struct api_traits<ApiMethods::delete_group>
 #endif  // SPLITWISECPP_API_TRAITS_H_
 
 // DO NOT EDIT BY HAND!
-// 'tools/generate_cpp_api_from_descriptor' created me on 2020-05-25T22:36:40.078685 from descriptor version 0.9
+// 'tools/generate_cpp_api_from_descriptor' created me on 2020-05-26T02:01:24.390832 from descriptor version 0.9
