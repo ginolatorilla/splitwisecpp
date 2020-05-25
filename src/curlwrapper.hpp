@@ -25,7 +25,6 @@ public:
     Curl();
     ~Curl();
 
-    void set_write_to_stream(std::ostream* stream);
     void set_write_to_json(detail::JsonReaderContext* stream);
     ::CURLcode set_url(const char* url);
     ::CURLcode perform();
