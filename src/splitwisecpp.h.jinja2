@@ -1,0 +1,35 @@
+{%- macro to_cpp_func_params(param_descriptors) %}
+    {%- for pd in param_descriptors -%}
+        {{pd.cpptype}} {{pd.name}}{{", " if not loop.last}}
+    {%- endfor -%}
+{% endmacro -%}
+// Copyright (c) 2020 Gino Latorilla.
+
+#ifndef SPLITWISECPP_H_
+#define SPLITWISECPP_H_
+
+#include "types.h"
+
+namespace splitwisecpp
+{
+
+class Splitwise
+{
+public:
+    explicit Splitwise(const Configuration& config);
+    ~Splitwise();
+{% for md in method_descriptors %}
+    ApiResponse {{ md.name }}({{to_cpp_func_params(md.param_descriptors)}});
+{%- endfor %}
+
+private:
+    UnspecifiedPtr _context;
+};
+
+}  // namespace splitwisecpp
+
+#endif  // SPLITWISECPP_H_
+
+// DO NOT EDIT BY HAND!
+// 'tools/generate_cpp_api_from_descriptor' created me on {{gen_time}} from descriptor version {{ version }}
+

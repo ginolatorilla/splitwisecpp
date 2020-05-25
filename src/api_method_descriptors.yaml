@@ -1,0 +1,29 @@
+version: 0.9
+
+# schema:
+#   version: string
+#   method_descriptors: array of method_descriptor
+
+# schema for method_descriptor:
+#   name: string
+#   param_descriptors: array of param_descriptor, optional
+
+# schema for param_descriptor:
+#   name: string
+#   cpptype: string
+
+method_descriptors:
+  - name:  get_current_user
+  - name: get_user
+    param_descriptors:
+    - name: id
+      cpptype: IdType
+  - name: get_groups
+  - name: create_group
+    param_descriptors:
+    - name: group
+      cpptype: const Json&
+  - name: delete_group
+    param_descriptors:
+    - name: id
+      cpptype: IdType
