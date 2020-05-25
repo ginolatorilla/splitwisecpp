@@ -41,6 +41,8 @@ Additional components if you want to develop this:
 - [gcovr](https://gcovr.com/en/stable/), for code coverage
 - [clang-format](https://clang.llvm.org/docs/ClangFormat.html), for code formatting
 - [clang-tidy](https://clang.llvm.org/extra/clang-tidy/), for static analysis
+- Python 3.6
+- Python Jinja2
 
 GTest will be automatically downloaded from GitHub if you don't have it pre-installed.
 
@@ -70,3 +72,10 @@ GTest will be automatically downloaded from GitHub if you don't have it pre-inst
   - [ ] OAuth1 generation
   - [ ] Command line interface
 - [ ] API documentation
+
+## For Developers
+
+Add new API methods in `src/api_method_descriptors.yaml` (the schema is in the comments).
+Then run `tools/generate_cpp_api_from_descriptor` to generate interfaces and implementation code.
+
+You may use `pipenv` to install a virtual environment.
