@@ -1,0 +1,34 @@
+{%- macro to_cpp_func_params(param_descriptors) %}
+    {%- for pd in param_descriptors -%}
+        {{pd.cpptype}} {{pd.name}}{{", " if not loop.last}}
+    {%- endfor -%}
+{% endmacro -%}
+// Copyright (c) 2020 Gino Latorilla.
+
+#include "splitwisecpp/splitwisecpp.h"
+#include "context.hpp"
+#include <array>
+
+namespace splitwisecpp
+{
+
+Splitwise::Splitwise(const Configuration& config)
+{
+    _context = new Context(&config);
+}
+
+Splitwise::~Splitwise()
+{
+    delete Context::cast(_context);
+}
+{% for md in method_descriptors %}
+ApiResponse Splitwise::{{ md.name }}({{to_cpp_func_params(md.param_descriptors)}})
+{
+    return Context::cast(_context)->api_request_as_json<ApiMethods::{{md.name}}>({{ md.param_descriptors|map(attribute='name')|join(", ")}});
+}
+{% endfor %}
+}  // namespace splitwisecpp
+
+// DO NOT EDIT BY HAND!
+// 'tools/generate_cpp_api_from_descriptor' created me on {{gen_time}} from descriptor version {{ version }}
+

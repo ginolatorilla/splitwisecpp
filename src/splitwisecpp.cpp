@@ -17,37 +17,32 @@ Splitwise::~Splitwise()
     delete Context::cast(_context);
 }
 
-#define API_REQUEST(__method__) \
-    (Context::cast(_context)->api_request_as_json<ApiMethods::__method__>())
-#define API_REQUEST_1(__method__, _1) \
-    (Context::cast(_context)->api_request_as_json<ApiMethods::__method__>(_1))
-
 ApiResponse Splitwise::get_current_user()
 {
-    return API_REQUEST(get_current_user);
+    return Context::cast(_context)->api_request_as_json<ApiMethods::get_current_user>();
 }
 
 ApiResponse Splitwise::get_user(IdType id)
 {
-    return API_REQUEST_1(get_user, id);
+    return Context::cast(_context)->api_request_as_json<ApiMethods::get_user>(id);
 }
 
 ApiResponse Splitwise::get_groups()
 {
-    return API_REQUEST(get_groups);
+    return Context::cast(_context)->api_request_as_json<ApiMethods::get_groups>();
 }
 
 ApiResponse Splitwise::create_group(const Json& group)
 {
-    return API_REQUEST_1(create_group, group);
+    return Context::cast(_context)->api_request_as_json<ApiMethods::create_group>(group);
 }
 
 ApiResponse Splitwise::delete_group(IdType id)
 {
-    return API_REQUEST_1(delete_group, id);
+    return Context::cast(_context)->api_request_as_json<ApiMethods::delete_group>(id);
 }
 
-#undef API_REQUEST
-#undef API_REQUEST_1
-
 }  // namespace splitwisecpp
+
+// DO NOT EDIT BY HAND!
+// 'tools/generate_cpp_api_from_descriptor' created me on 2020-05-25T22:24:38.317598 from descriptor version 0.9
