@@ -3,7 +3,8 @@
 
 namespace splitwisecpp
 {
-extern const std::string BASEURL; // TODO: Relocate here.
+
+const std::string BASEURL = "https://secure.splitwise.com/api/v3.0/";
 
 HttpGetRequestBuilder::HttpGetRequestBuilder(Context* ctx) : context(ctx)
 {
@@ -85,7 +86,7 @@ ErrorCodes HttpPostRequestBuilder::authenticate()
         context->oauth_client
             ->getFormattedHttpHeader(OAuth::Http::Post, signed_url)
             .c_str(),
-        payload.empty()? nullptr : &payload);
+        payload.empty() ? nullptr : &payload);
     return ErrorCodes::NoError;
 }
 

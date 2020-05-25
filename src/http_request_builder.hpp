@@ -4,15 +4,15 @@
 #define SPLITWISECPP_HTTP_REQUEST_BUILDER_H_
 
 #include "api_traits.hpp"
-#include "splitwisecpp/types.h"
 #include "curlwrapper.hpp"
+#include "splitwisecpp/types.h"
 #include <string>
 
 namespace splitwisecpp
 {
 struct HttpGetRequestBuilder;
 struct HttpPostRequestBuilder;
-struct Context;
+class Context;
 
 template <HttpMethods M> struct builder
 {
@@ -29,7 +29,8 @@ template <> struct builder<HttpMethods::Post>
     using type = HttpPostRequestBuilder;
 };
 
-template <HttpMethods M> typename builder<M>::type build_http_request(Context* context)
+template <HttpMethods M>
+typename builder<M>::type build_http_request(Context* context)
 {
     return typename builder<M>::type(context);
 }
@@ -41,7 +42,7 @@ struct HttpGetRequestBuilder
 
     HttpGetRequestBuilder& with_uri(const std::string& uri);
 
-    template <typename T> // TODO: will not work for non-arithmetics
+    template <typename T>  // TODO: will not work for non-arithmetics
     HttpGetRequestBuilder& with_param(const T& value)
     {
         static_assert(std::is_arithmetic<T>::value);
