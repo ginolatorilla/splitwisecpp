@@ -32,7 +32,11 @@ ApiResponse Splitwise::{{ md.name }}({{to_cpp_func_params(md)}})
         {%- endif %}
                 .with_uri("{{md.name}}")
         {%- for pd in md.param_descriptors %}
+            {%- if pd.query %}
+                .with_query_param("{{pd.name}}", {{pd.name}})
+            {%- else %}
                 .with_param({{pd.name}})
+            {%- endif %}
         {%- endfor %}
                 .send();
 }

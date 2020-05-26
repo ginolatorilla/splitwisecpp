@@ -71,6 +71,14 @@ TEST_F(splitwisecpp_api_tests, http_get_with_parameter)
     ASSERT_EQ(splitwisecpp::ErrorCodes::NoError, user.error);
 }
 
+TEST_F(splitwisecpp_api_tests, http_get_with_query_parameters)
+{
+    expect_for_http_get_api_request("get_comments?expense_id=12345");
+    EXPECT_CALL(mock_curl(), curl_easy_perform(dummy_curl)).Times(1);
+    auto user = splitwise->get_comments(12345);
+    ASSERT_EQ(splitwisecpp::ErrorCodes::NoError, user.error);
+}
+
 TEST_F(splitwisecpp_api_tests, get_groups)
 {
     expect_for_http_get_api_request("get_groups");

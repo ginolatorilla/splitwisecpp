@@ -50,7 +50,8 @@ void HttpGetRequestBuilder::assemble_curl_query()
 
 ErrorCodes HttpGetRequestBuilder::authenticate()
 {
-    auto raw_url = url + (param.size() > 0 ? "/" + param : "");
+    auto raw_url = url + (param.empty()? "" : "/" + param);
+    raw_url += query_params.empty()? "" : "?" + query_params;
     auto signed_url =
         raw_url + "?" +
         context->oauth_client->getURLQueryString(OAuth::Http::Get, raw_url);

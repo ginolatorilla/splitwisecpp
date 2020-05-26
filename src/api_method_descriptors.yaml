@@ -13,6 +13,11 @@ version: 0.9
 # schema for param_descriptor:
 #   name: string
 #   cpptype: string
+#   query: bool, optional
+#
+# Example:
+# name: the_param => https://baseurl/api/the_method/the_param
+# query: True => https://baseurl/api/the_method?the_param=value
 
 method_descriptors:
   # Users
@@ -98,6 +103,20 @@ method_descriptors:
     - name: id
       cpptype: IdType
   # Comments
+  - name: get_comments
+    http_method: Get
+    param_descriptors:
+    - name: expense_id
+      cpptype: IdType
+      query: True
+  - name: create_comment
+    http_method: Post
+    payload: True
+  - name: delete_comment
+    http_method: Post
+    param_descriptors:
+    - name: id
+      cpptype: IdType
   # Notifications
   - name: get_notifications
     http_method: Get

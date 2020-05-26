@@ -50,12 +50,8 @@ GTest will be automatically downloaded from GitHub if you don't have it pre-inst
 
 - Authentication using OAuth1 tokens.
   Please read the Splitwise [docs](http://dev.splitwise.com/#authentication) to learn more.
-- Implemented the following API calls:
-  - [`get_current_user`](http://dev.splitwise.com/#get_current_user)
-  - [`get_user/:id`](http://dev.splitwise.com/#get_user-id)
-  - [`get_groups`](http://dev.splitwise.com/#get_groups)
-  - [`create_group`](http://dev.splitwise.com/#create_group)
-  - [`delete_group/:id`](http://dev.splitwise.com/#delete_group-id)
+- (As of 26 May 2020) Implemented all the APIs described in
+  Splitwise's [developer documentation](http://dev.splitwise.com/).
 - Exports public types from `jsoncpp`
 
 ## Limitations
