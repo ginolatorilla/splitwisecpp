@@ -1,5 +1,7 @@
 # Splitwise C++ API
 
+![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/ginolatorilla/splitwisecpp/C%2B%2B%20with%20CMake?style=plastic)
+
 A native C++ API for [the Splitwise App](https://www.splitwise.com/). Written in C++14.
 
 Tested in Linux.
