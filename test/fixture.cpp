@@ -80,4 +80,55 @@ void splitwisecpp_api_tests::expect_for_http_get_api_request(
         .WillOnce(
             DoAll(SaveArg<2>(&captured_write_callback_arg), Return(CURLE_OK)));
 }
+
+void splitwisecpp_api_tests::expect_for_http_post_api_request(
+    const std::string& method)
+{
+    EXPECT_CALL(
+        mock_curl(),
+        curl_easy_setopt_voidp(
+            dummy_curl,
+            CURLOPT_URL,
+            VoidPtrToCString(StartsWith(std::string(BASEURL) + "/" + method))))
+        .Times(1);
+    EXPECT_CALL(mock_curl(),
+                curl_easy_setopt_voidp(dummy_curl,
+                                       CURLOPT_CUSTOMREQUEST,
+                                       VoidPtrToCString(StrEq("POST"))))
+        .Times(1);
+    EXPECT_CALL(
+        mock_curl(),
+        curl_easy_setopt_voidp(dummy_curl, CURLOPT_WRITEDATA, NotNull()))
+        .Times(1);
+    EXPECT_CALL(
+        mock_curl(),
+        curl_easy_setopt_voidp(dummy_curl, CURLOPT_WRITEFUNCTION, NotNull()))
+        .Times(1);
+
+    ::curl_slist* dummy_slist = (::curl_slist*)0x5050ffffecec0a0a;
+    EXPECT_CALL(mock_curl(),
+                curl_slist_append(IsNull(), StartsWith("Authorization: OAuth")))
+        .Times(1)
+        .WillOnce(Return(dummy_slist));
+    EXPECT_CALL(mock_curl(),
+                curl_slist_append(dummy_slist,
+                                  StartsWith("Content-Type: application/json")))
+        .Times(1)
+        .WillOnce(Return(dummy_slist));
+    EXPECT_CALL(
+        mock_curl(),
+        curl_easy_setopt_voidp(dummy_curl, CURLOPT_HTTPHEADER, dummy_slist))
+        .Times(1);
+    EXPECT_CALL(mock_curl(), curl_slist_free_all(dummy_slist)).Times(1);
+}
+
+void splitwisecpp_api_tests::expect_for_http_post_api_request_with_payload(const std::string& method)
+{
+    expect_for_http_post_api_request(method);
+    EXPECT_CALL(
+        mock_curl(),
+        curl_easy_setopt_voidp(dummy_curl, CURLOPT_POSTFIELDS, NotNull()))
+        .Times(1);
+}
+
 }  // namespace testing
