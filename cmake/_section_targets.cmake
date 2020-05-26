@@ -28,7 +28,13 @@ target_include_directories(${PROJECT_NAME}
 target_link_libraries(${PROJECT_NAME} PRIVATE oauthcpp)
 
 add_custom_target(coverage
-    COMMAND gcovr -j -r ${CMAKE_CURRENT_SOURCE_DIR} -f ${CMAKE_CURRENT_SOURCE_DIR}/src -f ${CMAKE_CURRENT_SOURCE_DIR}/include
+    COMMAND 
+        gcovr
+            -j
+            -r ${CMAKE_CURRENT_SOURCE_DIR}
+            -f ${CMAKE_CURRENT_SOURCE_DIR}/src
+            -f ${CMAKE_CURRENT_SOURCE_DIR}/include
+            ${CMAKE_CURRENT_BINARY_DIR}
 )
 add_custom_target(coverage-wipe
     COMMAND find ${CMAKE_CURRENT_BINARY_DIR} -name '*.gcda' -delete
@@ -36,7 +42,12 @@ add_custom_target(coverage-wipe
 add_custom_target(coverage-html
     COMMAND mkdir -p ${CMAKE_CURRENT_BINARY_DIR}/coverage
     COMMAND
-        gcovr -j -r ${CMAKE_CURRENT_SOURCE_DIR} -f ${CMAKE_CURRENT_SOURCE_DIR}/src -f ${CMAKE_CURRENT_SOURCE_DIR}/include
-        --html-details --output ${CMAKE_CURRENT_BINARY_DIR}/coverage/${PROJECT_NAME}-coverage.html
+        gcovr
+            -j
+            -r ${CMAKE_CURRENT_SOURCE_DIR}
+            -f ${CMAKE_CURRENT_SOURCE_DIR}/src
+            -f ${CMAKE_CURRENT_SOURCE_DIR}/include
+            --html-details --output ${CMAKE_CURRENT_BINARY_DIR}/coverage/${PROJECT_NAME}-coverage.html
+            ${CMAKE_CURRENT_BINARY_DIR}
     COMMAND xdg-open ${CMAKE_CURRENT_BINARY_DIR}/coverage/${PROJECT_NAME}-coverage.html
 )
