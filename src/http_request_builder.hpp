@@ -5,6 +5,7 @@
 
 #include "curlwrapper.hpp"
 #include "splitwisecpp/types.h"
+#include <memory>
 #include <string>
 
 namespace splitwisecpp
@@ -40,7 +41,7 @@ typename builder<M>::type build_http_request(Context* context)
     return typename builder<M>::type(context);
 }
 
-struct HttpGetRequestBuilder // TODO: add URL encoding on string inputs
+struct HttpGetRequestBuilder  // TODO: add URL encoding on string inputs
 {
     explicit HttpGetRequestBuilder(Context* ctx);
     virtual ~HttpGetRequestBuilder();
@@ -50,16 +51,20 @@ struct HttpGetRequestBuilder // TODO: add URL encoding on string inputs
     template <typename T>  // TODO: will not work for non-arithmetics
     HttpGetRequestBuilder& with_param(const T& value)
     {
-        static_assert(std::is_arithmetic<T>::value);
+        static_assert(std::is_arithmetic<T>::value,
+                      "T must be an arithmetic type.");
         param = std::to_string(value);
         return *this;
     }
 
     template <typename T>  // TODO: will not work for non-arithmetics
-    HttpGetRequestBuilder& with_query_param(const std::string& name, const T& value)
+    HttpGetRequestBuilder& with_query_param(const std::string& name,
+                                            const T& value)
     {
-        static_assert(std::is_arithmetic<T>::value);
-        query_params += (query_params.empty()? "" : "&") + name + '=' + std::to_string(value);
+        static_assert(std::is_arithmetic<T>::value,
+                      "T must be an arithmetic type.");
+        query_params += (query_params.empty() ? "" : "&") + name + '=' +
+                        std::to_string(value);
         return *this;
     }
 
@@ -76,7 +81,7 @@ protected:
 private:
     void assemble_curl_query();
     detail::JsonReaderContext reader_context;
-    std::unique_ptr<::Json::CharReader> json_c_reader;
+    std::shared_ptr<::Json::CharReader> json_c_reader;
     Json response;
     std::string query_params;
 };
