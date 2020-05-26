@@ -36,4 +36,8 @@ jobs:
       run: ${{ runner.workspace }}/build/impl_test
     - name: Collect coverage
       run: |
-        pipenv run cmake --build ${{ runner.workspace }}/build --target coverage
+        pipenv run cmake --build ${{ runner.workspace }}/build --target coverage-xml
+    - name: Upload coverage artifacts to Codecov
+      uses: codecov/codecov-action@v1.0.7
+      with:
+        file: ${{ runner.workspace }}/build/coverage/splitwisecpp-coverage.xml
