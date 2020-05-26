@@ -2,6 +2,8 @@
 #include <cassert>
 #include <json/writer.h>
 #include <ostream>
+#include <memory>
+#include <sstream>
 
 namespace splitwisecpp
 {
