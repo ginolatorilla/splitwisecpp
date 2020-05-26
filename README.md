@@ -1,10 +1,11 @@
 # Splitwise C++ API
 
-:warning: **Work in Progress** :warning:
-
 A native C++ API for [the Splitwise App](https://www.splitwise.com/). Written in C++14.
 
 Tested in Linux.
+
+:warning: This library is in beta phase. All APIs are implemented but corner-cases might not be tested.
+**Use at your own risk.** :warning:
 
 ## Quick Start
 
