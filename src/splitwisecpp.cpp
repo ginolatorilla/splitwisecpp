@@ -176,6 +176,30 @@ ApiResponse Splitwise::undelete_expense(IdType id)
                 .send();
 }
 
+ApiResponse Splitwise::get_comments(IdType expense_id)
+{
+    return build_http_request<HttpMethods::Get>(Context::cast(_context))
+                .with_uri("get_comments")
+                .with_query_param("expense_id", expense_id)
+                .send();
+}
+
+ApiResponse Splitwise::create_comment(const Json& payload)
+{
+    return build_http_request<HttpMethods::Post>(Context::cast(_context))
+                .with_json_payload(payload)
+                .with_uri("create_comment")
+                .send();
+}
+
+ApiResponse Splitwise::delete_comment(IdType id)
+{
+    return build_http_request<HttpMethods::Post>(Context::cast(_context))
+                .with_uri("delete_comment")
+                .with_param(id)
+                .send();
+}
+
 ApiResponse Splitwise::get_notifications()
 {
     return build_http_request<HttpMethods::Get>(Context::cast(_context))
@@ -208,4 +232,4 @@ ApiResponse Splitwise::parse_sentence(const Json& payload)
 }  // namespace splitwisecpp
 
 // DO NOT EDIT BY HAND!
-// 'tools/generate_cpp_api_from_descriptor' created me on 2020-05-26T13:22:06.622296 from descriptor version 0.9
+// 'tools/generate_cpp_api_from_descriptor' created me on 2020-05-26T14:06:27.658579 from descriptor version 0.9

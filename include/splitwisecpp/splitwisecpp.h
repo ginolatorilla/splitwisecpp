@@ -34,6 +34,9 @@ public:
     ApiResponse update_expense(IdType id, const Json& payload);
     ApiResponse delete_expense(IdType id);
     ApiResponse undelete_expense(IdType id);
+    ApiResponse get_comments(IdType expense_id);
+    ApiResponse create_comment(const Json& payload);
+    ApiResponse delete_comment(IdType id);
     ApiResponse get_notifications();
     ApiResponse get_currencies();
     ApiResponse get_categories();
@@ -48,4 +51,4 @@ private:
 #endif  // SPLITWISECPP_H_
 
 // DO NOT EDIT BY HAND!
-// 'tools/generate_cpp_api_from_descriptor' created me on 2020-05-26T13:22:06.622296 from descriptor version 0.9
+// 'tools/generate_cpp_api_from_descriptor' created me on 2020-05-26T14:06:27.658579 from descriptor version 0.9
