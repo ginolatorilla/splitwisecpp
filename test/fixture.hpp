@@ -29,6 +29,8 @@ protected:
     Matcher<void*> SignedHttp(const std::string& method) const;
 
     void expect_for_http_get_api_request(const std::string& method);
+    void expect_for_http_post_api_request(const std::string& method);
+    void expect_for_http_post_api_request_with_payload(const std::string& method);
 
     splitwisecpp::Configuration test_config;
     std::unique_ptr<splitwisecpp::Splitwise> splitwise;
