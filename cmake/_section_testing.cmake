@@ -21,3 +21,4 @@ macro(add_gtest test_name)
 endmacro()
 
 add_gtest(impl_test)
+add_gtest(api_test)

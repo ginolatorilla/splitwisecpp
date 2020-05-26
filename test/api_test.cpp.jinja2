@@ -1,0 +1,51 @@
+{%- macro to_expectation_string(method_descriptor) -%}
+    "{{method_descriptor.name}}
+    {%- if method_descriptor.param_descriptors and
+           method_descriptor.param_descriptors[0].cpptype == "IdType" and
+           not method_descriptor.param_descriptors[0].query -%}
+    /12345
+    {%- elif method_descriptor.param_descriptors and method_descriptor.param_descriptors[0].query -%}
+    ?{{method_descriptor.param_descriptors[0].name}}=12345
+    {%- endif -%}
+    "
+{%- endmacro -%}
+{%- macro to_test_value(method_descriptor) -%}
+    {%- if method_descriptor.param_descriptors and method_descriptor.param_descriptors[0].cpptype == "IdType" -%}
+        12345
+    {%- endif -%}
+    {%- if method_descriptor.payload -%}
+        {%- if method_descriptor.param_descriptors -%}, {%- endif -%}::Json::Value(0xDEADBEEF)
+    {%- endif -%}
+{%- endmacro -%}
+// Copyright (c) 2020 Gino Latorilla.
+
+#include "actions.hpp"
+#include "fixture.hpp"
+#include "matchers.hpp"
+#include "splitwisecpp/splitwisecpp.h"
+#include <gmock/gmock.h>
+#include <gtest/gtest.h>
+#include <json/writer.h>  // TODO: Mention in FAQ if operator<< doesn't work
+
+namespace testing
+{
+{% for md in method_descriptors %}
+TEST_F(splitwisecpp_api_tests, {{md.name}})
+{
+    {%- if md.http_method == "Get" %}
+    expect_for_http_get_api_request({{to_expectation_string(md)}});
+    {%- elif md.http_method == "Post" and md.payload %}
+    expect_for_http_post_api_request_with_payload("{{md.name}}");
+    {%- elif md.http_method == "Post" and not md.payload %}
+    expect_for_http_post_api_request("{{md.name}}");
+    {%- endif %}
+    EXPECT_CALL(mock_curl(), curl_easy_perform(dummy_curl)).Times(1).WillOnce(Return(CURLE_OK));
+    auto user = splitwise->{{md.name}}({{to_test_value(md)}});
+    EXPECT_EQ(splitwisecpp::ErrorCodes::NoError, user.error);
+}
+{% endfor %}
+}  // namespace testing
+
+// DO NOT EDIT BY HAND!
+// 'tools/generate_cpp_api_from_descriptor' created me on {{gen_time}} from descriptor version {{ version }}
+

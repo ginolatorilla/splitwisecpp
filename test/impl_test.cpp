@@ -80,16 +80,6 @@ TEST_F(splitwisecpp_api_tests, http_get_with_query_parameters)
     ASSERT_EQ(splitwisecpp::ErrorCodes::NoError, user.error);
 }
 
-TEST_F(splitwisecpp_api_tests, get_groups)
-{
-    expect_for_http_get_api_request("get_groups");
-    EXPECT_CALL(mock_curl(), curl_easy_perform(dummy_curl))
-        .Times(1)
-        .WillOnce(Return(CURLE_OK));
-    auto user = splitwise->get_groups();
-    ASSERT_EQ(splitwisecpp::ErrorCodes::NoError, user.error);
-}
-
 TEST_F(splitwisecpp_api_tests, http_post_with_payload_and_without_parameter)
 {
     expect_for_http_post_api_request_with_payload("create_group");
