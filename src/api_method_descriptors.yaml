@@ -15,13 +15,21 @@ version: 0.9
 #   cpptype: string
 
 method_descriptors:
-  - name:  get_current_user
+  # Users
+  - name: get_current_user
     http_method: Get
   - name: get_user
     http_method: Get
     param_descriptors:
     - name: id
       cpptype: IdType
+  - name: update_user
+    http_method: Post
+    payload: True
+    param_descriptors:
+    - name: id
+      cpptype: IdType
+  # Groups
   - name: get_groups
     http_method: Get
   - name: create_group
@@ -32,3 +40,72 @@ method_descriptors:
     param_descriptors:
     - name: id
       cpptype: IdType
+  - name: undelete_group
+    http_method: Post
+    param_descriptors:
+    - name: id
+      cpptype: IdType
+  - name: add_user_to_group
+    http_method: Post
+    payload: True
+  - name: remove_user_from_group
+    http_method: Post
+    payload: True
+  # Friends
+  - name: get_friends
+    http_method: Get
+  - name: get_friend
+    http_method: Get
+    param_descriptors:
+    - name: id
+      cpptype: IdType
+  - name: create_friend
+    http_method: Post
+    payload: True
+  - name: create_friends
+    http_method: Post
+    payload: True
+  - name: delete_friend
+    http_method: Post
+    param_descriptors:
+    - name: id
+      cpptype: IdType
+  # Expenses
+  - name: get_expenses
+    http_method: Get
+  - name: get_expense
+    http_method: Get
+    param_descriptors:
+    - name: id
+      cpptype: IdType
+  - name: create_expenses
+    http_method: Post
+    payload: True
+  - name: update_expense
+    http_method: Post
+    payload: True
+    param_descriptors:
+    - name: id
+      cpptype: IdType
+  - name: delete_expense
+    http_method: Post
+    param_descriptors:
+    - name: id
+      cpptype: IdType
+  - name: undelete_expense
+    http_method: Post
+    param_descriptors:
+    - name: id
+      cpptype: IdType
+  # Comments
+  # Notifications
+  - name: get_notifications
+    http_method: Get
+  # Others
+  - name: get_currencies
+    http_method: Get
+  - name: get_categories
+    http_method: Get
+  - name: parse_sentence
+    http_method: Post
+    payload: True
