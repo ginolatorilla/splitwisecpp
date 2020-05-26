@@ -37,14 +37,15 @@ splitwisecpp_api_tests::~splitwisecpp_api_tests()
 Matcher<void*> splitwisecpp_api_tests::SignedHttp(
     const std::string& method) const
 {
+    // TODO: harden these tests. This will fail to catch https://a.com?param=1?param=2?
     return AllOf(
-        VoidPtrToCString(StartsWith(std::string(BASEURL) + "/" + method + "?")),
+        VoidPtrToCString(StartsWith(std::string(BASEURL) + "/" + method)),
         VoidPtrToCString(HasSubstr("oauth_signature_method=HMAC-SHA1")),
         VoidPtrToCString(HasSubstr("oauth_version=1.0")),
 #ifdef GTEST_USES_POSIX_RE
-        VoidPtrToCString(ContainsRegex("oauth_signature=[A-Za-z0-9%]+")),
-        VoidPtrToCString(ContainsRegex("oauth_nonce=[a-f0-9]+.*")),
-        VoidPtrToCString(ContainsRegex("oauth_timestamp=[0-9]+")),
+        VoidPtrToCString(ContainsRegex("&?oauth_signature=[A-Za-z0-9%]+&?")),
+        VoidPtrToCString(ContainsRegex("&?oauth_nonce=[a-f0-9]+.*&?")),
+        VoidPtrToCString(ContainsRegex("&?oauth_timestamp=[0-9]+&?")),
 #else  // Windows, see
        // https://github.com/google/googletest/blob/master/googletest/docs/advanced.md#regular-expression-syntax
         VoidPtrToCString(ContainsRegex("oauth_signature=.+")),

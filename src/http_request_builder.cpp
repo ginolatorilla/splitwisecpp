@@ -50,11 +50,10 @@ void HttpGetRequestBuilder::assemble_curl_query()
 
 ErrorCodes HttpGetRequestBuilder::authenticate()
 {
-    auto raw_url = url + (param.empty()? "" : "/" + param);
-    raw_url += query_params.empty()? "" : "?" + query_params;
+    auto raw_url = url + (param.empty() ? "" : "/" + param);
     auto signed_url =
         raw_url + "?" +
-        context->oauth_client->getURLQueryString(OAuth::Http::Get, raw_url);
+        context->oauth_client->getURLQueryString(OAuth::Http::Get, raw_url + (query_params.empty()? "" : ("?" + query_params)));
     if (context->curl.set_url(signed_url.c_str()) == CURLE_OUT_OF_MEMORY)
     {
         return ErrorCodes::OutOfMemory;
