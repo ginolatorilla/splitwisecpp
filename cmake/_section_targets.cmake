@@ -48,6 +48,7 @@ add_custom_target(coverage-xml
             -f ${CMAKE_CURRENT_SOURCE_DIR}/src
             -f ${CMAKE_CURRENT_SOURCE_DIR}/include
             --xml ${CMAKE_CURRENT_BINARY_DIR}/coverage/${PROJECT_NAME}-coverage.xml
+            --print-summary
             ${CMAKE_CURRENT_BINARY_DIR}
 )
 add_custom_target(coverage-html
