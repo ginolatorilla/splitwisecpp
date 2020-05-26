@@ -1,0 +1,39 @@
+name: C++ with CMake
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install C++ dependencies
+      run: |
+        DEBIAN_FRONTEND=noninteractive sudo apt-get update -y
+        DEBIAN_FRONTEND=noninteractive sudo apt-get install libjsoncpp-dev libcurl4-openssl-dev -y
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v1
+      with:
+        python-version: 3.8
+    - name: Install Pipenv
+      run: |
+        python3 -m pip install --upgrade pip
+        pip install pipenv
+        pipenv sync --dev
+    - name: Build with CMake
+      uses: ashutoshvarma/action-cmake-build@v1
+      with:
+        configure-options: -Dsplitwisecpp_ENABLE_CODE_COVERAGE=ON -Dsplitwisecpp_BUILD_SHARED=ON -Dsplitwisecpp_ENABLE_TESTING=ON
+    - name: Run API Tests
+      run: ${{ runner.workspace }}/build/api_test
+    - name: Run Impl Tests
+      run: ${{ runner.workspace }}/build/impl_test
+    - name: Collect coverage
+      run: |
+        pipenv run cmake --build ${{ runner.workspace }}/build --target coverage
