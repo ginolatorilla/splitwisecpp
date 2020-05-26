@@ -39,6 +39,17 @@ add_custom_target(coverage
 add_custom_target(coverage-wipe
     COMMAND find ${CMAKE_CURRENT_BINARY_DIR} -name '*.gcda' -delete
 )
+add_custom_target(coverage-xml
+    COMMAND mkdir -p ${CMAKE_CURRENT_BINARY_DIR}/coverage
+    COMMAND
+        gcovr
+            -j
+            -r ${CMAKE_CURRENT_SOURCE_DIR}
+            -f ${CMAKE_CURRENT_SOURCE_DIR}/src
+            -f ${CMAKE_CURRENT_SOURCE_DIR}/include
+            --xml ${CMAKE_CURRENT_BINARY_DIR}/coverage/${PROJECT_NAME}-coverage.xml
+            ${CMAKE_CURRENT_BINARY_DIR}
+)
 add_custom_target(coverage-html
     COMMAND mkdir -p ${CMAKE_CURRENT_BINARY_DIR}/coverage
     COMMAND
